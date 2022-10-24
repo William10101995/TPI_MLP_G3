@@ -115,7 +115,7 @@ def predecir(patron):
     return np.rint(resultado)
 
 
-# predecimos
+# predecimos los ejemplos de test
 for i in range(len(test)):
     prediccion = predecir(test[i])
     print("Prediciendo ejemplo numero: ", i)
