@@ -2,19 +2,20 @@
 import numpy as np
 # importo funciones de activacion
 import funciones_act as fa
-from dataset_gen import create_correct_format, distortion_pattern, pattern_F, pattern_B, pattern_D
+from dataset_gen import cargar_datos, pattern_F, pattern_B, pattern_D
 
 
-dataset = create_correct_format(100, [pattern_B, pattern_D, pattern_F])
-
-
+# cargo el dataset
+dataset = cargar_datos()
+# separo el dataset
 input_X = np.array(dataset[0])
 input_Y = np.array(dataset[1])
+test = np.array(dataset[2])
+val = np.array(dataset[3])
 # Algunos patrones para probar
 patronB = np.array(pattern_B).ravel()
 patronD = np.array(pattern_D).ravel()
 patronF = np.array(pattern_F).ravel()
-patronBDist = np.array(distortion_pattern(pattern_D, 0.30)).ravel()
 
 
 # defino clase para una capa
@@ -111,12 +112,12 @@ def predecir(patron):
 
 
 # predecimos
-prediccion = predecir(patronBDist)
+prediccion = predecir(patronD)
 print("Prediciendo....")
 if (prediccion[0] == np.array([0, 0, 1])).all():
-    print("Su letra es F")
-elif (prediccion[0] == np.array([0, 1, 0])).all():
     print("Su letra es D")
+elif (prediccion[0] == np.array([0, 1, 0])).all():
+    print("Su letra es F")
 elif (prediccion[0] == np.array([1, 0, 0])).all():
     print("Su letra es B")
 else:
