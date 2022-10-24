@@ -2,7 +2,7 @@
 import numpy as np
 # importo funciones de activacion
 import funciones_act as fa
-from dataset_gen import cargar_datos, pattern_F, pattern_B, pattern_D
+from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, pattern_D
 
 
 # cargo el dataset
@@ -12,10 +12,14 @@ input_X = np.array(dataset[0])
 input_Y = np.array(dataset[1])
 test = np.array(dataset[2])
 val = np.array(dataset[3])
+
 # Algunos patrones para probar
 patronB = np.array(pattern_B).ravel()
 patronD = np.array(pattern_D).ravel()
 patronF = np.array(pattern_F).ravel()
+patD = distortion_pattern(pattern_D, 0.9)
+pat = np.array(patD)
+patdist = pat.ravel()
 
 
 # defino clase para una capa
@@ -98,7 +102,7 @@ def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, funcion_costo_der=fa
 topologia = [100, 5, 5, 3]
 red_neuronal = crear_red(topologia, 'sigmoide')
 print("Entrenando red neuronal")
-for i in range(4000):
+for i in range(2000):
     # Entrenamos a la red!
     entrenar(red_neuronal, input_X, input_Y, 0.05, fa.costo_derivada)
 print("Red neuronal entrenada")
@@ -112,13 +116,14 @@ def predecir(patron):
 
 
 # predecimos
-prediccion = predecir(patronD)
-print("Prediciendo....")
-if (prediccion[0] == np.array([0, 0, 1])).all():
-    print("Su letra es D")
-elif (prediccion[0] == np.array([0, 1, 0])).all():
-    print("Su letra es F")
-elif (prediccion[0] == np.array([1, 0, 0])).all():
-    print("Su letra es B")
-else:
-    print("No se pudo identificar la letra")
+for i in range(len(test)):
+    prediccion = predecir(test[i])
+    print("Prediciendo ejemplo numero: ", i)
+    if (prediccion[0] == np.array([0, 0, 1])).all():
+        print("Su letra es D")
+    elif (prediccion[0] == np.array([0, 1, 0])).all():
+        print("Su letra es F")
+    elif (prediccion[0] == np.array([1, 0, 0])).all():
+        print("Su letra es B")
+    else:
+        print("No se pudo identificar la letra")
