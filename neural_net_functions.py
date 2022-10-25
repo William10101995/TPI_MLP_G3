@@ -16,13 +16,14 @@ def which_letter_is(output, threshold):
 def train_once(neural_net, X, Y, lr, cost_f):
     outputs = forward_pass(neural_net, X)
     trained_neural_net = back_propagation(neural_net, Y, lr, cost_f, outputs)
-    # retorno la ultima salida
+    # retorno la red neuronal entrenada
     return trained_neural_net
 
 def training(epochs, neural_net, X, Y, lr, cost_f):
+    trained_neural_net = train_once(neural_net, X, Y, lr, cost_f)
     for i in range(epochs):
         # Entrenamos a la red
-        trained_neural_net = train_once(neural_net, X, Y, lr, cost_f)
+        trained_neural_net = train_once(trained_neural_net, X, Y, lr, cost_f)
     return trained_neural_net
 
 # defino una funcion para predecir
