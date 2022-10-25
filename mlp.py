@@ -17,7 +17,7 @@ val = np.array(dataset[3])
 patronB = np.array(pattern_B).ravel()
 patronD = np.array(pattern_D).ravel()
 patronF = np.array(pattern_F).ravel()
-patD = distortion_pattern(pattern_D, 0.9)
+patD = distortion_pattern(pattern_D, 0.7)
 pat = np.array(patD)
 patdist = pat.ravel()
 
@@ -37,6 +37,8 @@ class capa:
         # inicializo pesos y bias
         self.pesos = np.random.rand(n_conexiones, n_neuronas)*1-1
         self.bias = np.random.rand(1, n_neuronas)*1-1
+        # matriz para los pesos de la capa anterior
+        self.pesos_anterior = np.zeros((n_conexiones, n_neuronas))
 
 
 # defino una funcion para crear la red
@@ -52,7 +54,7 @@ def crear_red(topologia, funcion_act):
 
 
 # defino una funcion para entrenar la red
-def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, funcion_costo_der=fa.costo_derivada, entrena=True):
+def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, momentum, funcion_costo_der=fa.costo_derivada, entrena=True):
     # inicializo una lista para guardar las salidas de cada capa
     salidas = [(None, X)]
 
@@ -91,8 +93,17 @@ def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, funcion_costo_der=fa
                 np.mean(errores[0], axis=0, keepdims=True) * \
                 coeficiente_entrenamiento
 
-            red_neuronal[l].pesos = red_neuronal[l].pesos - \
-                salidas[l][1].T @ errores[0] * coeficiente_entrenamiento
+            # guardo pesos anteriores
+            pesos_ateriores = (salidas[l][1].T @ errores[0] * coeficiente_entrenamiento) + (
+                momentum * red_neuronal[l].pesos_anterior)
+            # actualizo pesos
+            red_neuronal[l].pesos = red_neuronal[l].pesos - pesos_ateriores
+            # actualizo pesos anteriores
+            red_neuronal[l].pesos_anterior = pesos_ateriores
+
+            # Esto dejo comentado por las dudas
+            # red_neuronal[l].pesos = red_neuronal[l].pesos - \
+            #     salidas[l][1].T @ errores[0] * coeficiente_entrenamiento
     # retorno la ultima salida
     return salidas[-1][1]
 
@@ -100,30 +111,32 @@ def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, funcion_costo_der=fa
 # defino una topologia para la red
 # 100 entradas, 5 neuronas en la capa oculta, 5 neuronas en la capa oculta, 3 salidas
 topologia = [100, 5, 5, 3]
-red_neuronal = crear_red(topologia, 'lineal')
+red_neuronal = crear_red(topologia, 'sigmoide')
 print("Entrenando red neuronal")
-for i in range(4000):
+for i in range(1000):
     # Entrenamos a la red!
-    entrenar(red_neuronal, input_X, input_Y, 0.05, fa.costo_derivada)
+    entrenar(red_neuronal, input_X, input_Y, 0.05, 0.9, fa.costo_derivada)
+
 print("Red neuronal entrenada")
 
 
 # defino una funcion para predecir
 def predecir(patron):
-    resultado = entrenar(red_neuronal, patron, input_Y, 0.05,
+    resultado = entrenar(red_neuronal, patron, input_Y, 0.05, 0.9,
                          fa.costo_derivada, entrena=False)
-    return np.rint(resultado)
+    return resultado
 
 
-# predecimos los ejemplos de test
+# predecimos los ejemplos de validacion
 for i in range(len(val)):
     prediccion = predecir(val[i])
-    print("Prediciendo ejemplo numero: ", i)
-    if (prediccion[0] == np.array([0, 0, 1])).all():
-        print("Su letra es D")
-    elif (prediccion[0] == np.array([0, 1, 0])).all():
-        print("Su letra es F")
-    elif (prediccion[0] == np.array([1, 0, 0])).all():
-        print("Su letra es B")
+    print("Prediciendo ejemplo numero: ", i+1)
+    if (np.rint(prediccion[0]) == np.array([0, 0, 1])).all():
+        print("Su letra es D con probabilidad: ", prediccion[0])
+    elif (np.rint(prediccion[0]) == np.array([0, 1, 0])).all():
+        print("Su letra es F con probabilidad: ", prediccion[0])
+    elif (np.rint(prediccion[0]) == np.array([1, 0, 0])).all():
+        print("Su letra es B con probabilidad: ", prediccion[0])
     else:
-        print("No se pudo identificar la letra")
+        print("No se pudo identificar la letra con probabilidad: ",
+              prediccion[0])
