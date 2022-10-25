@@ -15,12 +15,12 @@ def sigmoide_derivada(x):
 
 
 def lineal(x):
-    return x
+    return x*0.1
 # defino funcion lineal derivada
 
 
 def lineal_derivada(x):
-    return 1
+    return 0.1
 # defino funcion de costo
 
 

@@ -6,7 +6,7 @@ from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, 
 
 
 # cargo el dataset
-dataset = cargar_datos()
+dataset = cargar_datos(100, 10)
 # separo el dataset
 input_X = np.array(dataset[0])
 input_Y = np.array(dataset[1])
@@ -43,7 +43,7 @@ class capa:
 def crear_red(topologia, funcion_act):
     # inicializo una lista para guardar cada capa
     red = []
-    # recorro caada una de las capas
+    # recorro cada una de las capas
     for l, layer in enumerate(topologia[:-1]):
         # agrego una capa a la red
         red.append(capa(topologia[l], topologia[l+1], funcion_act))
@@ -98,11 +98,11 @@ def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, funcion_costo_der=fa
 
 
 # defino una topologia para la red
-# 1 entradas, 4 neuronas en la capa oculta, 4 neuronas en la capa oculta, 3 salidas
+# 100 entradas, 5 neuronas en la capa oculta, 5 neuronas en la capa oculta, 3 salidas
 topologia = [100, 5, 5, 3]
-red_neuronal = crear_red(topologia, 'sigmoide')
+red_neuronal = crear_red(topologia, 'lineal')
 print("Entrenando red neuronal")
-for i in range(2000):
+for i in range(4000):
     # Entrenamos a la red!
     entrenar(red_neuronal, input_X, input_Y, 0.05, fa.costo_derivada)
 print("Red neuronal entrenada")
@@ -116,8 +116,8 @@ def predecir(patron):
 
 
 # predecimos los ejemplos de test
-for i in range(len(test)):
-    prediccion = predecir(test[i])
+for i in range(len(val)):
+    prediccion = predecir(val[i])
     print("Prediciendo ejemplo numero: ", i)
     if (prediccion[0] == np.array([0, 0, 1])).all():
         print("Su letra es D")

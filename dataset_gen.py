@@ -243,15 +243,13 @@ def guardar_datos():
         "datasets/1000/30_validacion/validacion/validacion.txt", datos_validacion)
 
 
-# guardar_datos()
-
-
-def cargar_datos():
+def cargar_datos(n_ejemplos, porcentaje_validacion):
     datos_entrada = np.loadtxt(
-        "datasets/100/10_validacion/entrenamiento/entrada.txt")
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/entrada.txt")
     datos_salida = np.loadtxt(
-        "datasets/100/10_validacion/entrenamiento/salida.txt")
-    datos_prueba = np.loadtxt("datasets/100/10_validacion/test/test.txt")
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/salida.txt")
+    datos_prueba = np.loadtxt("datasets/"+str(n_ejemplos)+"/" +
+                              str(porcentaje_validacion)+"_validacion/test/test.txt")
     datos_validacion = np.loadtxt(
-        "datasets/100/10_validacion/validacion/validacion.txt")
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/validacion.txt")
     return [datos_entrada, datos_salida, datos_prueba, datos_validacion]
