@@ -8,7 +8,7 @@ from neural_net_functions import training, predict
 
 
 # cargo el dataset
-dataset = cargar_datos()
+dataset = cargar_datos(1000, 10)
 # separo el dataset
 input_X = np.array(dataset[0], dtype=np.float64)
 input_Y = np.array(dataset[1], dtype=np.float64)
