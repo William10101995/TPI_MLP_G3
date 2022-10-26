@@ -10,6 +10,9 @@ class layer:
         self.W = np.random.rand(n_connections, n_neurons)*1-1
         self.bias = np.random.rand(1, n_neurons)*1-1
 
+        # matriz para los pesos de la capa anterior
+        self.previous = np.zeros((n_connections, n_neurons))
+
 
 # defino una funcion para crear la red
 def create_neural_net(topology, fa):
@@ -36,7 +39,7 @@ def forward_pass(neural_net, input_data):
         output.append((pre_activation, post_actiavation))
     return output
 
-def back_propagation(neural_net, Y, lr, cost_f, output):
+def back_propagation(neural_net, Y, lr, momentum, cost_f, output):
     # inicializo una lista para guardar los errores
     errors = []
     # recorro cada una de las capas en orden inverso
@@ -55,6 +58,12 @@ def back_propagation(neural_net, Y, lr, cost_f, output):
 
         # descenso del gradiente
         neural_net[l].bias = neural_net[l].bias - np.mean(errors[0], axis=0, keepdims=True) * lr
-        neural_net[l].W = neural_net[l].W - output[l][1].T @ errors[0] * lr
-    
+        # neural_net[l].W = neural_net[l].W - output[l][1].T @ errors[0] * lr
+
+        # guardo pesos anteriores
+        previous_W = (output[l][1].T @ errors[0] * lr) + (momentum * neural_net[l].previous)
+        # actualizo pesos
+        neural_net[l].W = neural_net[l].W - previous_W
+        # actualizo pesos anteriores
+        neural_net[l].previous = previous_W            
     return neural_net

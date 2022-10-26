@@ -14,17 +14,17 @@ def which_letter_is(output, threshold):
 
 
 
-def train_once(neural_net, X, Y, lr, cost_f):
+def train_once(neural_net, X, Y, lr, momentum, cost_f):
     outputs = forward_pass(neural_net, X)
-    trained_neural_net = back_propagation(neural_net, Y, lr, cost_f, outputs)
+    trained_neural_net = back_propagation(neural_net, Y, lr, momentum, cost_f, outputs)
     return trained_neural_net
 
 # defino una funcion para entrenar la red
-def training(epochs, neural_net, X, Y, lr, cost_f):
-    trained_neural_net = train_once(neural_net, X, Y, lr, cost_f)
+def training(epochs, neural_net, X, Y, lr, momentum, cost_f):
+    trained_neural_net = train_once(neural_net, X, Y, lr, momentum, cost_f)
     for i in range(epochs - 1): # -1 porque lo entrena ya una vez al inicio de la funcion
         # Entrenamos a la red
-        trained_neural_net = train_once(trained_neural_net, X, Y, lr, cost_f)
+        trained_neural_net = train_once(trained_neural_net, X, Y, lr, momentum, cost_f)
     return trained_neural_net
 
 # defino una funcion para predecir

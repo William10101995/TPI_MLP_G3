@@ -19,7 +19,7 @@ val = np.array(dataset[3])
 patronB = np.array(pattern_B).ravel()
 patronD = np.array(pattern_D).ravel()
 patronF = np.array(pattern_F).ravel()
-patD = distortion_pattern(pattern_D, 0.90)
+patD = distortion_pattern(pattern_D, 0.1)
 pat = np.array(patD)
 patdist = pat.ravel()
 
@@ -28,9 +28,9 @@ patdist = pat.ravel()
 # 1 entradas, 4 neuronas en la capa oculta, 4 neuronas en la capa oculta, 3 salidas
 topologia = [100, 5, 5, 3]
 neural_net = create_neural_net(topologia, fa)
-trained_neural_net = training(10000, neural_net, input_X, input_Y, 0.05, fa.derived_cost)
+trained_neural_net = training(1000, neural_net, input_X, input_Y, 0.9, 0.9, fa.derived_cost)
 
 # predecimos los ejemplos de test
 for i in range(10):
-    prediccion = predict(trained_neural_net, patdist)
+    prediccion = predict(trained_neural_net, patronB)
     print(prediccion)
