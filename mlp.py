@@ -6,7 +6,7 @@ from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, 
 
 
 # cargo el dataset
-dataset = cargar_datos(100, 10)
+dataset = cargar_datos(1000, 30)
 # separo el dataset
 input_X = np.array(dataset[0])
 input_Y = np.array(dataset[1])
@@ -47,6 +47,9 @@ def crear_red(topologia, funcion_act):
     red = []
     # recorro cada una de las capas
     for l, layer in enumerate(topologia[:-1]):
+        if (l == len((topologia)) - 1):
+            red.append(
+                capa(topologia[l], topologia[l+1], fa.sigmoide, fa.sigmoide_derivada))
         # agrego una capa a la red
         red.append(capa(topologia[l], topologia[l+1], funcion_act))
     # retorno la red
@@ -110,8 +113,8 @@ def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, momentum, funcion_co
 
 # defino una topologia para la red
 # 100 entradas, 5 neuronas en la capa oculta, 5 neuronas en la capa oculta, 3 salidas
-topologia = [100, 5, 5, 3]
-red_neuronal = crear_red(topologia, 'sigmoide')
+topologia = [100, 10, 10, 3]
+red_neuronal = crear_red(topologia, 'lineal')
 print("Entrenando red neuronal")
 for i in range(1000):
     # Entrenamos a la red!
@@ -128,15 +131,20 @@ def predecir(patron):
 
 
 # predecimos los ejemplos de validacion
-for i in range(len(val)):
-    prediccion = predecir(val[i])
-    print("Prediciendo ejemplo numero: ", i+1)
-    if (np.rint(prediccion[0]) == np.array([0, 0, 1])).all():
-        print("Su letra es D con probabilidad: ", prediccion[0])
-    elif (np.rint(prediccion[0]) == np.array([0, 1, 0])).all():
-        print("Su letra es F con probabilidad: ", prediccion[0])
-    elif (np.rint(prediccion[0]) == np.array([1, 0, 0])).all():
-        print("Su letra es B con probabilidad: ", prediccion[0])
-    else:
-        print("No se pudo identificar la letra con probabilidad: ",
-              prediccion[0])
+for i in range(1):
+    prediccion = predecir(patronB)
+    print("Prediccion B: ", prediccion[0])
+    prediccion = predecir(patronD)
+    print("Prediccion D: ", prediccion[0])
+    prediccion = predecir(patronF)
+    print("Prediccion F: ", prediccion[0])
+    # print("Prediciendo ejemplo numero: ", i+1)
+    # if (np.rint(prediccion[0]) == np.array([0, 0, 1])).all():
+    #     print("Su letra es D con probabilidad: ", prediccion[0])
+    # elif (np.rint(prediccion[0]) == np.array([0, 1, 0])).all():
+    #     print("Su letra es F con probabilidad: ", prediccion[0])
+    # elif (np.rint(prediccion[0]) == np.array([1, 0, 0])).all():
+    #     print("Su letra es B con probabilidad: ", prediccion[0])
+    # else:
+    #     print("No se pudo identificar la letra con probabilidad: ",
+    #           prediccion[0])
