@@ -48,10 +48,13 @@ def crear_red(topologia, funcion_act):
     # recorro cada una de las capas
     for l, layer in enumerate(topologia[:-1]):
         if (l == len((topologia)) - 1):
+
             red.append(
                 capa(topologia[l], topologia[l+1], fa.sigmoide, fa.sigmoide_derivada))
         # agrego una capa a la red
-        red.append(capa(topologia[l], topologia[l+1], funcion_act))
+        else:
+
+            red.append(capa(topologia[l], topologia[l+1], funcion_act))
     # retorno la red
     return red
 
@@ -115,6 +118,16 @@ def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, momentum, funcion_co
 # 100 entradas, 5 neuronas en la capa oculta, 5 neuronas en la capa oculta, 3 salidas
 topologia = [100, 10, 10, 3]
 red_neuronal = crear_red(topologia, 'lineal')
+for l, layer in enumerate(red_neuronal):
+    if (l == len((red_neuronal)) - 1):
+        print("funcion de activacion de la ultima capa: ",
+              red_neuronal[l].act_f)
+
+        # agrego una capa a la red
+    else:
+        print("funcion de activacion de la capa: ",
+              l, " es: ", red_neuronal[l].act_f)
+
 print("Entrenando red neuronal")
 for i in range(1000):
     # Entrenamos a la red!
