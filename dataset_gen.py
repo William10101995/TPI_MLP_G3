@@ -102,33 +102,6 @@ def random_distortion_set(a, b):
         return float('0.' + str(rand))
 
 
-def create_correct_format(n, arrayPattern):
-    array_dist_data = []
-    array_real_data = []
-    for i in range(round(n*0.33)):
-        dist_pattern = distortion_pattern(
-            arrayPattern[0], random_distortion_set(0, 30))
-        dist_pattern = np.array(dist_pattern)
-        dist_pattern = dist_pattern.ravel()
-        array_dist_data.append(dist_pattern)
-        array_real_data.append([1, 0, 0])
-    for i in range(round(n*0.33)):
-        dist_pattern = distortion_pattern(
-            arrayPattern[1], random_distortion_set(0, 30))
-        dist_pattern = np.array(dist_pattern)
-        dist_pattern = dist_pattern.ravel()
-        array_dist_data.append(dist_pattern)
-        array_real_data.append([0, 1, 0])
-    for i in range(round(n*0.33)):
-        dist_pattern = distortion_pattern(
-            arrayPattern[2], random_distortion_set(0, 30))
-        dist_pattern = np.array(dist_pattern)
-        dist_pattern = dist_pattern.ravel()
-        array_dist_data.append(dist_pattern)
-        array_real_data.append([0, 0, 1])
-    return [array_dist_data, array_real_data]
-
-
 def create_dataset(n_ejemplos, arrayPattern):
     porcentaje_entrenamineto = round(n_ejemplos * 0.6)
     porcentaje_entrenamineto_sin_distorsion = round(
@@ -142,36 +115,38 @@ def create_dataset(n_ejemplos, arrayPattern):
     array_real_data = []
     array_data_test = []
     array_data_validation = []
-    # 10% de los datos sin distorsion
+    # Datos de entrenamiento sin distorsion
+    # Patron B
     for i in range(round(porcentaje_entrenamineto_sin_distorsion*0.33)):
+        dist_pattern = arrayPattern[0]
+        dist_pattern = np.array(dist_pattern)
+        dist_pattern = dist_pattern.ravel()
+        array_dist_data.append(dist_pattern)
+        array_real_data.append([1, 0, 0])
+    # Patron F
+    for i in range(round(porcentaje_entrenamineto_sin_distorsion*0.33)):
+        dist_pattern = arrayPattern[1]
+        dist_pattern = np.array(dist_pattern)
+        dist_pattern = dist_pattern.ravel()
+        array_dist_data.append(dist_pattern)
+        array_real_data.append([0, 1, 0])
+    # Patron D
+    for i in range(round(porcentaje_entrenamineto_sin_distorsion*0.33)):
+        dist_pattern = arrayPattern[2]
+        dist_pattern = np.array(dist_pattern)
+        dist_pattern = dist_pattern.ravel()
+        array_dist_data.append(dist_pattern)
+        array_real_data.append([0, 0, 1])
+    # Datos de entrenamiento con distorsion
+    # Patron B
+    for i in range(round(porcentaje_entrenamineto_con_distorsion*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[0], random_distortion_set(0, 30))
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_dist_data.append(dist_pattern)
         array_real_data.append([1, 0, 0])
-    for i in range(round(porcentaje_entrenamineto_sin_distorsion*0.33)):
-        dist_pattern = distortion_pattern(
-            arrayPattern[1], random_distortion_set(0, 30))
-        dist_pattern = np.array(dist_pattern)
-        dist_pattern = dist_pattern.ravel()
-        array_dist_data.append(dist_pattern)
-        array_real_data.append([0, 1, 0])
-    for i in range(round(porcentaje_entrenamineto_sin_distorsion*0.33)):
-        dist_pattern = distortion_pattern(
-            arrayPattern[2], random_distortion_set(0, 30))
-        dist_pattern = np.array(dist_pattern)
-        dist_pattern = dist_pattern.ravel()
-        array_dist_data.append(dist_pattern)
-        array_real_data.append([0, 0, 1])
-    # 90% de los datos con distorsion
-    for i in range(round(porcentaje_entrenamineto_con_distorsion*0.33)):
-        dist_pattern = distortion_pattern(
-            arrayPattern[0], random_distortion_set(0, 30))
-        dist_pattern = np.array(dist_pattern)
-        dist_pattern = dist_pattern.ravel()
-        array_dist_data.append(dist_pattern)
-        array_real_data.append([1, 0, 0])
+    # Patron F
     for i in range(round(porcentaje_entrenamineto_con_distorsion*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[1], random_distortion_set(0, 30))
@@ -179,6 +154,7 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = dist_pattern.ravel()
         array_dist_data.append(dist_pattern)
         array_real_data.append([0, 1, 0])
+    # Patron D
     for i in range(round(porcentaje_entrenamineto_con_distorsion*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[2], random_distortion_set(0, 30))
@@ -186,38 +162,44 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = dist_pattern.ravel()
         array_dist_data.append(dist_pattern)
         array_real_data.append([0, 0, 1])
-    # creo el dataset de prueba representativo del 20% de los datos
+    # Datos de prueba
+    # Patron B
     for i in range(round(porcentaje_prueba*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[0], random_distortion_set(0, 30))
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_test.append(dist_pattern)
+    # Patron F
     for i in range(round(porcentaje_prueba*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[1], random_distortion_set(0, 30))
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_test.append(dist_pattern)
+    # Patron D
     for i in range(round(porcentaje_prueba*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[2], random_distortion_set(0, 30))
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_test.append(dist_pattern)
-    # creo el dataset de validacion representativo del 10% de los datos
+    # Datos de validacion
+    # Patron B
     for i in range(round(porcentaje_validacion*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[0], random_distortion_set(0, 30))
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_validation.append(dist_pattern)
+    # Patron F
     for i in range(round(porcentaje_validacion*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[1], random_distortion_set(0, 30))
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_validation.append(dist_pattern)
+    # Patron D
     for i in range(round(porcentaje_validacion*0.33)):
         dist_pattern = distortion_pattern(
             arrayPattern[2], random_distortion_set(0, 30))

@@ -5,23 +5,6 @@ import funciones_act as fa
 from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, pattern_D
 
 
-# cargo el dataset
-dataset = cargar_datos(1000, 30)
-# separo el dataset
-input_X = np.array(dataset[0])
-input_Y = np.array(dataset[1])
-test = np.array(dataset[2])
-val = np.array(dataset[3])
-
-# Algunos patrones para probar
-patronB = np.array(pattern_B).ravel()
-patronD = np.array(pattern_D).ravel()
-patronF = np.array(pattern_F).ravel()
-patD = distortion_pattern(pattern_D, 0.7)
-pat = np.array(patD)
-patdist = pat.ravel()
-
-
 # defino clase para una capa
 class capa:
     # inicio de la clase
@@ -47,14 +30,13 @@ def crear_red(topologia, funcion_act):
     red = []
     # recorro cada una de las capas
     for l, layer in enumerate(topologia[:-1]):
-        if (l == len((topologia)) - 1):
-
-            red.append(
-                capa(topologia[l], topologia[l+1], fa.sigmoide, fa.sigmoide_derivada))
-        # agrego una capa a la red
-        else:
-
+        # agrego la capas ocultas a la red
+        if (l < 2):
             red.append(capa(topologia[l], topologia[l+1], funcion_act))
+        # agrego la capa de salida a la red
+        else:
+            red.append(capa(topologia[l], topologia[l+1],
+                            'sigmoide'))
     # retorno la red
     return red
 
@@ -114,50 +96,75 @@ def entrenar(red_neuronal, X, Y, coeficiente_entrenamiento, momentum, funcion_co
     return salidas[-1][1]
 
 
+# cargo el dataset
+dataset = cargar_datos(1000, 10)
+# separo el dataset
+input_X = np.array(dataset[0])
+input_Y = np.array(dataset[1])
+test = np.array(dataset[2])
+val = np.array(dataset[3])
+
+# Algunos patrones para probar
+patronB = np.array(pattern_B).ravel()
+patronD = np.array(pattern_D).ravel()
+patronF = np.array(pattern_F).ravel()
+patB = distortion_pattern(pattern_B, 0.3)
+pat = np.array(patB)
+patdist = pat.ravel()
+
 # defino una topologia para la red
 # 100 entradas, 5 neuronas en la capa oculta, 5 neuronas en la capa oculta, 3 salidas
 topologia = [100, 10, 10, 3]
 red_neuronal = crear_red(topologia, 'lineal')
-for l, layer in enumerate(red_neuronal):
-    if (l == len((red_neuronal)) - 1):
-        print("funcion de activacion de la ultima capa: ",
-              red_neuronal[l].act_f)
-
-        # agrego una capa a la red
-    else:
-        print("funcion de activacion de la capa: ",
-              l, " es: ", red_neuronal[l].act_f)
 
 print("Entrenando red neuronal")
 for i in range(1000):
-    # Entrenamos a la red!
-    entrenar(red_neuronal, input_X, input_Y, 0.05, 0.9, fa.costo_derivada)
-
+    for x, y in zip(input_X, input_Y):
+        x = np.atleast_2d(x)
+        y = np.atleast_2d(y)
+        # Entrenamos a la red!
+        entrenar(red_neuronal, x, y, 0.5, 0.5, fa.costo_derivada)
 print("Red neuronal entrenada")
 
 
 # defino una funcion para predecir
 def predecir(patron):
-    resultado = entrenar(red_neuronal, patron, input_Y, 0.05, 0.9,
+    resultado = entrenar(red_neuronal, patron, input_Y, 0.5, 0.5,
                          fa.costo_derivada, entrena=False)
     return resultado
 
 
-# predecimos los ejemplos de validacion
-for i in range(1):
-    prediccion = predecir(patronB)
-    print("Prediccion B: ", prediccion[0])
-    prediccion = predecir(patronD)
-    print("Prediccion D: ", prediccion[0])
-    prediccion = predecir(patronF)
-    print("Prediccion F: ", prediccion[0])
-    # print("Prediciendo ejemplo numero: ", i+1)
-    # if (np.rint(prediccion[0]) == np.array([0, 0, 1])).all():
-    #     print("Su letra es D con probabilidad: ", prediccion[0])
-    # elif (np.rint(prediccion[0]) == np.array([0, 1, 0])).all():
-    #     print("Su letra es F con probabilidad: ", prediccion[0])
-    # elif (np.rint(prediccion[0]) == np.array([1, 0, 0])).all():
-    #     print("Su letra es B con probabilidad: ", prediccion[0])
-    # else:
-    #     print("No se pudo identificar la letra con probabilidad: ",
-    #           prediccion[0])
+# Funciones de prueba
+# Funcion para predecir patrones originales y un distorsionado
+def predecirPatronesOriginales(patB, patD, patF, patDist):
+    print("Prediciendo patrones originales")
+    print("Patron B: ", predecir(patB)[0])
+    print("Patron D: ", predecir(patD)[0])
+    print("Patron F: ", predecir(patF)[0])
+    print("Prediccion B Distorsionado 30%: ", predecir(patDist)[0])
+
+
+# Ejecucion
+#predecirPatronesOriginales(patronB, patronD, patronF, patdist)
+
+# Funcion para predecir set de test
+
+
+def predecirSetTest(test):
+    print("Prediciendo set de test")
+    for i in range(len(test)):
+        print("Patron ", i, ": ", predecir(test[i])[0])
+
+# Ejecucion
+# predecirSetTest(test)
+
+# Funcion para predecir set de validacion
+
+
+def predecirSetValidacion(val):
+    print("Prediciendo set de validacion")
+    for i in range(len(val)):
+        print("Patron ", i, ": ", predecir(val[i])[0])
+
+# Ejecucion
+# predecirSetValidacion(val)
