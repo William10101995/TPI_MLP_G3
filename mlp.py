@@ -34,7 +34,7 @@ topologia = [100, 10, 10, 3]
 red_neuronal = crear_red(topologia, fa)
 trained_neural_net = None
 trained_neural_net = training(
-    100, red_neuronal, input_X, input_Y, 0.5, 0.5, fa)
+    100000, red_neuronal, input_X, input_Y, 0.5, 0.5, fa)
 
 
 predecirPatronesOriginales(

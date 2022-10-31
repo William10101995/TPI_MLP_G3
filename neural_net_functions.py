@@ -1,5 +1,5 @@
 import numpy as np
-from neural_net_components import back_propagation, capa, crear_red, forward_pass
+from neural_net_components import back_propagation, forward_pass
 
 
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
