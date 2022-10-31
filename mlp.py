@@ -33,13 +33,15 @@ topologia = [100, 10, 10, 3]
 # tipo de datos de topologia
 red_neuronal = create_neural_net(topologia, fa)
 trained_neural_net = None
-trained_neural_net = training(
-    100, red_neuronal, input_X, input_Y, entrada_validacion,salida_validacion, 0.5, 0.5, fa, 0.5)
+data_trainning = training(100, red_neuronal, input_X, input_Y, entrada_validacion,salida_validacion, 0.5, 0.5, fa, 0.9, 100)
 
+trained_neural_net = data_trainning[0] # red neuronal entrenada
+print(data_trainning[1]) # accuracy en cada epoca
+print(data_trainning[2]) # mse en cada epoca
 
-# predecirPatronesOriginales(
-#     trained_neural_net, patronB, patronD, patronF, patdist)
-# print()
-# predecirSetTest(trained_neural_net, entrada_test)
-# print()
-# predecirSetValidacion(trained_neural_net, entrada_validacion)
+print()
+predecirPatronesOriginales(trained_neural_net, patronB, patronD, patronF, patdist)
+print()
+predecirSetTest(trained_neural_net, entrada_test)
+print()
+predecirSetValidacion(trained_neural_net, entrada_validacion)
