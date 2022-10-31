@@ -4,6 +4,7 @@ from neural_net_components import back_propagation, forward_pass
 
 def getAccuracy(neural_net, X, Y):
     correct = 0
+    mse = 0
     for x, y in zip(X, Y):
         x = np.atleast_2d(x)
         y = np.atleast_2d(y)
@@ -13,8 +14,18 @@ def getAccuracy(neural_net, X, Y):
         real_letter = which_letter_is(y, 0.99)
         if predicted_letter[0] == real_letter[0]:
             correct += 1
-    accuracy = correct/len(Y)
-    return accuracy
+        
+        mse += (predicted_letter[1] - real_letter[1])**2
+    accuracy = (correct/len(Y)) * 100
+    mse = mse / len(Y)
+    print("accuracy", accuracy)
+    print("mse", mse)
+    print()
+    return [accuracy, mse]
+
+# def mse(neural_net, X, Y):
+
+    # return np.mean(np.power(self.predict(X) - Y, 2))
 
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
 
@@ -23,7 +34,7 @@ def train_once(neural_net, X, Y, lr, momentum, cost_f):
     return neural_net
 
 
-def training(epochs, neural_net, X, Y, lr, momentum, fa):
+def training(epochs, neural_net, X, Y, lr, momentum, fa, threshold):
     x1 = X[0]
     y1 = Y[0]
 
@@ -40,8 +51,11 @@ def training(epochs, neural_net, X, Y, lr, momentum, fa):
 
             trained_neural_net = train_once(
                 trained_neural_net, x, y, lr, momentum, fa.costo_derivada)
-    
-        print(getAccuracy(trained_neural_net, X, Y))
+
+        getAccuracy(trained_neural_net, X, Y)
+        # if(getAccuracy(trained_neural_net, X, Y) == threshold):
+        #     return [trained_neural_net, ]
+
     return trained_neural_net
 
 
