@@ -103,18 +103,21 @@ def random_distortion_set(a, b):
 
 
 def create_dataset(n_ejemplos, arrayPattern):
-    porcentaje_entrenamineto = round(n_ejemplos * 0.6)
+    # porcentaje de ejemplos para entrenamiento
+    porcentaje_entrenamineto = round(n_ejemplos * 0.7)
     porcentaje_entrenamineto_sin_distorsion = round(
         porcentaje_entrenamineto * 0.1)
     porcentaje_entrenamineto_con_distorsion = round(
         porcentaje_entrenamineto * 0.9)
-    porcentaje_prueba = round(n_ejemplos * 0.1)
-    porcentaje_validacion = round(n_ejemplos * 0.3)
+    porcentaje_prueba = round(n_ejemplos * 0.2)  # porcentaje de prueba
+    porcentaje_validacion = round(n_ejemplos * 0.1)  # porcentaje de validacion
     # creo el dataset de entrenamiento representativo del 70% de los datos
     array_dist_data = []
     array_real_data = []
     array_data_test = []
+    array_data_esp_test = []
     array_data_validation = []
+    array_data_esp_validation = []
     # Datos de entrenamiento sin distorsion
     # Patron B
     for i in range(round(porcentaje_entrenamineto_sin_distorsion*0.33)):
@@ -170,6 +173,7 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_test.append(dist_pattern)
+        array_data_esp_test.append([1, 0, 0])
     # Patron F
     for i in range(round(porcentaje_prueba*0.33)):
         dist_pattern = distortion_pattern(
@@ -177,6 +181,7 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_test.append(dist_pattern)
+        array_data_esp_test.append([0, 1, 0])
     # Patron D
     for i in range(round(porcentaje_prueba*0.33)):
         dist_pattern = distortion_pattern(
@@ -184,6 +189,7 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_test.append(dist_pattern)
+        array_data_esp_test.append([0, 0, 1])
     # Datos de validacion
     # Patron B
     for i in range(round(porcentaje_validacion*0.33)):
@@ -192,6 +198,7 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_validation.append(dist_pattern)
+        array_data_esp_validation.append([1, 0, 0])
     # Patron F
     for i in range(round(porcentaje_validacion*0.33)):
         dist_pattern = distortion_pattern(
@@ -199,6 +206,7 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_validation.append(dist_pattern)
+        array_data_esp_validation.append([0, 1, 0])
     # Patron D
     for i in range(round(porcentaje_validacion*0.33)):
         dist_pattern = distortion_pattern(
@@ -206,32 +214,43 @@ def create_dataset(n_ejemplos, arrayPattern):
         dist_pattern = np.array(dist_pattern)
         dist_pattern = dist_pattern.ravel()
         array_data_validation.append(dist_pattern)
-    return [array_dist_data, array_real_data, array_data_test, array_data_validation]
+        array_data_esp_validation.append([0, 0, 1])
+    return [array_dist_data, array_real_data, array_data_test, array_data_esp_test, array_data_validation, array_data_esp_validation]
 
 
 def guardar_datos():
-    datos = create_dataset(1000, [pattern_B, pattern_F, pattern_D])
+    datos = create_dataset(100, [pattern_B, pattern_F, pattern_D])
     datos_entrada = np.array(datos[0])
     datos_salida = np.array(datos[1])
     datos_prueba = np.array(datos[2])
-    datos_validacion = np.array(datos[3])
+    datos_salida_prueba = np.array(datos[3])
+    datos_validacion = np.array(datos[4])
+    datos_salida_validacion = np.array(datos[5])
     np.savetxt(
-        "datasets/1000/30_validacion/entrenamiento/entrada.txt", datos_entrada)
+        "datasets/100/10_validacion/entrenamiento/entrada_entrenamiento.txt", datos_entrada)
     np.savetxt(
-        "datasets/1000/30_validacion/entrenamiento/salida.txt", datos_salida)
+        "datasets/100/10_validacion/entrenamiento/salida_entrenamiento.txt", datos_salida)
     np.savetxt(
-        "datasets/1000/30_validacion/test/test.txt", datos_prueba)
+        "datasets/100/10_validacion/test/entrada_test.txt", datos_prueba)
     np.savetxt(
-        "datasets/1000/30_validacion/validacion/validacion.txt", datos_validacion)
+        "datasets/100/10_validacion/test/salida_test.txt", datos_salida_prueba)
+    np.savetxt(
+        "datasets/100/10_validacion/validacion/entrada_validacion.txt", datos_validacion)
+    np.savetxt(
+        "datasets/100/10_validacion/validacion/salida_validacion.txt", datos_salida_validacion)
 
 
 def cargar_datos(n_ejemplos, porcentaje_validacion):
     datos_entrada = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/entrada.txt")
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/entrada_entrenamiento.txt")
     datos_salida = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/salida.txt")
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/salida_entrenamiento.txt")
     datos_prueba = np.loadtxt("datasets/"+str(n_ejemplos)+"/" +
-                              str(porcentaje_validacion)+"_validacion/test/test.txt")
+                              str(porcentaje_validacion)+"_validacion/test/entrada_test.txt")
+    datos_salida_prueba = np.loadtxt(
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/test/salida_test.txt")
     datos_validacion = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/validacion.txt")
-    return [datos_entrada, datos_salida, datos_prueba, datos_validacion]
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/entrada_validacion.txt")
+    datos_salida_validacion = np.loadtxt(
+        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/salida_validacion.txt")
+    return [datos_entrada, datos_salida, datos_prueba, datos_salida_prueba, datos_validacion, datos_salida_validacion]
