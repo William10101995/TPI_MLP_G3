@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 from neural_net_components import back_propagation, forward_pass
 
-def getAccuracy(neural_net, X, Y):
+def getAccuracyAndMSE(neural_net, X, Y):
     correct = 0
     mse = 0
     for x, y in zip(X, Y):
@@ -18,14 +18,10 @@ def getAccuracy(neural_net, X, Y):
         mse += (predicted_letter[1] - real_letter[1])**2
     accuracy = (correct/len(Y)) * 100
     mse = mse / len(Y)
-    print("accuracy", accuracy)
-    print("mse", mse)
-    print()
+    print("accuracy", accuracy, "mse", mse)
     return [accuracy, mse]
 
-# def mse(neural_net, X, Y):
 
-    # return np.mean(np.power(self.predict(X) - Y, 2))
 
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
 
@@ -34,7 +30,7 @@ def train_once(neural_net, X, Y, lr, momentum, cost_f):
     return neural_net
 
 
-def training(epochs, neural_net, X, Y, lr, momentum, fa, threshold):
+def training(epochs, neural_net, X, Y, X_val, Y_val, lr, momentum, fa, threshold):
     x1 = X[0]
     y1 = Y[0]
 
@@ -52,7 +48,8 @@ def training(epochs, neural_net, X, Y, lr, momentum, fa, threshold):
             trained_neural_net = train_once(
                 trained_neural_net, x, y, lr, momentum, fa.costo_derivada)
 
-        getAccuracy(trained_neural_net, X, Y)
+        getAccuracyAndMSE(trained_neural_net, X_val, Y_val)
+        # mse(neural_net, X_val, Y_val)
         # if(getAccuracy(trained_neural_net, X, Y) == threshold):
         #     return [trained_neural_net, ]
 
@@ -72,4 +69,4 @@ def which_letter_is(output, threshold):
     ]
     
     letter_is = sorted(mapping, key=lambda x: x[1])
-    return [letter_is[2][0], letter_is[2][1]] if float(letter_is[2][1]) > threshold else "No se pudo identificar la letra"
+    return [letter_is[2][0], letter_is[2][1]] if float(letter_is[2][1]) > threshold else ["No se pudo identificar la letra", 0]
