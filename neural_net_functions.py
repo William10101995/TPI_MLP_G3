@@ -1,6 +1,20 @@
 import numpy as np
+from sklearn.metrics import accuracy_score
 from neural_net_components import back_propagation, forward_pass
 
+def getAccuracy(neural_net, X, Y):
+    correct = 0
+    for x, y in zip(X, Y):
+        x = np.atleast_2d(x)
+        y = np.atleast_2d(y)
+
+        predict = forward_pass(neural_net, x)
+        predicted_letter = which_letter_is(predict[-1][1], 0.5)
+        real_letter = which_letter_is(y, 0.99)
+        if predicted_letter[0] == real_letter[0]:
+            correct += 1
+    accuracy = correct/len(Y)
+    return accuracy
 
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
 
@@ -26,11 +40,22 @@ def training(epochs, neural_net, X, Y, lr, momentum, fa):
 
             trained_neural_net = train_once(
                 trained_neural_net, x, y, lr, momentum, fa.costo_derivada)
-    # print(trained_neural_net[3].pesos)
+    
+        print(getAccuracy(trained_neural_net, X, Y))
     return trained_neural_net
 
 
 def predict(trained_neural_net, patron):
     # print(trained_neural_net)
     result = forward_pass(trained_neural_net, patron)
-    return result[-1][1]
+    return which_letter_is(result[-1][1], 0.5)
+
+def which_letter_is(output, threshold):
+    mapping = [
+        ("B", output[0][0]), 
+        ("F", output[0][1]), 
+        ("D", output[0][2])
+    ]
+    
+    letter_is = sorted(mapping, key=lambda x: x[1])
+    return [letter_is[2][0], letter_is[2][1]] if float(letter_is[2][1]) > threshold else "No se pudo identificar la letra"

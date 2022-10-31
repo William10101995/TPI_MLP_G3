@@ -4,8 +4,8 @@ import numpy as np
 import funciones_act as fa
 from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, pattern_D
 
-from neural_net_components import crear_red, forward_pass, back_propagation
-from neural_net_functions import training, predict
+from neural_net_components import create_neural_net
+from neural_net_functions import training
 
 from test import predecirPatronesOriginales, predecirSetTest, predecirSetValidacion
 # cargo el dataset
@@ -31,15 +31,15 @@ patdist = pat.ravel()
 # 100 entradas, 5 o 10 neuronas en la capa oculta, 5 o 10 neuronas en la capa oculta, 3 salidas
 topologia = [100, 10, 10, 3]
 # tipo de datos de topologia
-red_neuronal = crear_red(topologia, fa)
+red_neuronal = create_neural_net(topologia, fa)
 trained_neural_net = None
 trained_neural_net = training(
     100, red_neuronal, input_X, input_Y, 0.5, 0.5, fa)
 
 
-predecirPatronesOriginales(
-    trained_neural_net, patronB, patronD, patronF, patdist)
-print()
-predecirSetTest(trained_neural_net, entrada_test)
-print()
-predecirSetValidacion(trained_neural_net, entrada_validacion)
+# predecirPatronesOriginales(
+#     trained_neural_net, patronB, patronD, patronF, patdist)
+# print()
+# predecirSetTest(trained_neural_net, entrada_test)
+# print()
+# predecirSetValidacion(trained_neural_net, entrada_validacion)

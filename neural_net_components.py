@@ -16,7 +16,7 @@ class layer:
         self.previous_W = np.zeros((n_conexiones, n_neuronas))
 
 # defino una funcion para crear la red
-def crear_red(topology, fa):
+def create_neural_net(topology, fa):
     # inicializo una lista para guardar cada capa
     neural_net = []
     # recorro cada una de las capas
