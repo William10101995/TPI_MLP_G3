@@ -1,5 +1,11 @@
+from tkinter import *
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+from matplotlib.figure import Figure
+from unittest import result
 import numpy as np
 from dataset_gen import cargar_datos
+import matplotlib.pyplot as plt
 
 
 # funcion para armar la arquitectura de la red
@@ -51,3 +57,27 @@ def getDataset(opciones):
 def tratarEntrada(arreglo):
     patron = np.array(arreglo).ravel()
     return patron
+
+
+# Funcion para ordenar los valores de mse y accuracy
+def ordenarMSEyAccuracy(mse, accuracy):
+
+    result = []
+    if len(mse) == len(accuracy):
+        for i in range(len(mse)):
+            if mse[i][1] < 1:
+                result.append(
+                    f'{i+1}                     {mse[i][1]}                        {accuracy[i][1]}')
+            else:
+                result.append(
+                    f'{i+1}                     {mse[i][1]}                             {accuracy[i][1]}')
+
+    return result
+
+
+# Funcion para tratar la salida de predecir
+def tratarSalida(salida):
+    if (len(salida[0])) == 1:
+        return f'Su letra es una: {salida[0]}'
+    else:
+        return salida[0]
