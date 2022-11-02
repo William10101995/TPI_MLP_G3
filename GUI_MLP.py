@@ -236,7 +236,7 @@ def mouseClickEntrenar():
                               entrada_validacion, salida_validacion, 0.5, momentum, fa, 0.5, 100)
     # Red neuronal entrenada
     trained_neural_net = data_trainning[0]
-    # Presicion de la red
+    # Precisión de la red
     accuracy = data_trainning[1]
     # Error del set de validacion
     mse = data_trainning[2]
@@ -250,26 +250,27 @@ def mouseClickEntrenar():
     label.pack(padx=10)
     #-------------------    Scroll    -------------------#
     scroll = Scrollbar(newWindows)
+    scroll.pack(side=RIGHT, fill=Y)
     #-------------------    Lista de resultados    -------------------#
     mylist = Listbox(newWindows, yscrollcommand=scroll.set,
-                     width=100, height=30, font=fontBox, justify='left', borderwidth=0)
+                     width=100, height=15, font=fontBox, justify='left', borderwidth=0)
     mylist.configure(background="gainsboro")
-    mylist.insert(STAR, "EPOCAS" + " " * 10 + "MSE" + " " * 20 + "ACCURACY")
+    mylist.insert(STAR, "Épocas" + " " * 10 +
+                  "MSE de Validación" + " " * 20 + "Precisión")
     mylist.insert(
-        STAR, "--------------------------------------------------------------------------")
+        STAR, "--------------------------------------------------------------------------------------")
     # Por cada elemento en el array de resultados, lo agrego a la lista
     for line in res:
         mylist.insert(END, line)
     # Configuro el scroll
     scroll.config(command=mylist.yview, cursor="hand2")
     # Muestro la lista y el scroll
-    scroll.pack(side=RIGHT, fill=Y)
-    mylist.pack(padx=30, pady=10)
+    mylist.pack(padx=10, pady=10)
 
     #-------------------    Boton de graficar    -------------------#
-    btnPres = Button(newWindows, text="Grafico Presicion", bg="gainsboro",
+    btnPres = Button(newWindows, text="Gráfico Precisión", bg="gainsboro",
                      fg="black", command=plotAccuracy, font=fontButton, cursor="hand2")
-    btnMse = Button(newWindows, text="Grafico MSE", bg="gainsboro",
+    btnMse = Button(newWindows, text="Gráfico MSE", bg="gainsboro",
                     fg="black", command=plotMSE, font=fontButton, cursor="hand2")
     btnPres.place(x=70, y=460)
     btnMse.place(x=290, y=460)
@@ -319,21 +320,21 @@ def plotMSE():
         error.append(mse[i][1])
         epocas.append(mse[i][0])
     window = Toplevel(newWindows)
-    window.title('Grafico MSE de Validacion')
+    window.title('Gráfico MSE de Validación')
     window.geometry("500x500")
     fig = Figure(figsize=(5, 5), dpi=100)
     plot1 = fig.add_subplot(111)
     plot1.plot(epocas, error, color='green', marker='^', label='MSE')
-    plot1.set_title("MSE del Conjunto de Validacion", fontdict={
+    plot1.set_title("MSE del Conjunto de Validación", fontdict={
                     'fontsize': 14, 'fontweight': 'bold', 'color': 'tab:green'})
-    plot1.set_xlabel("Epocas")
+    plot1.set_xlabel("Épocas")
     plot1.set_ylabel("Error")
     plot1.legend(loc='upper right')
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.draw()
-    canvas.get_tk_widget().pack()
     toolbar = NavigationToolbar2Tk(canvas, window)
     toolbar.update()
+    canvas.get_tk_widget().pack()
     canvas.get_tk_widget().pack()
 
 
@@ -344,21 +345,21 @@ def plotAccuracy():
         presicion.append(accuracy[i][1])
         epocas.append(accuracy[i][0])
     window = Toplevel(newWindows)
-    window.title('Grafico Presicion')
+    window.title('Gráfico Precisión')
     window.geometry("500x500")
     fig = Figure(figsize=(5, 5), dpi=100)
     plot1 = fig.add_subplot(111)
     plot1.plot(epocas, presicion, color='purple', marker='^', label='PRES')
-    plot1.set_title("Presicion del Modelo", fontdict={
+    plot1.set_title("Precisión del Modelo", fontdict={
                     'fontsize': 14, 'fontweight': 'bold', 'color': 'tab:purple'})
-    plot1.set_xlabel("Epocas")
-    plot1.set_ylabel("Presicion")
+    plot1.set_xlabel("Épocas")
+    plot1.set_ylabel("Precisión")
     plot1.legend(loc='upper right')
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.draw()
-    canvas.get_tk_widget().pack()
     toolbar = NavigationToolbar2Tk(canvas, window)
     toolbar.update()
+    canvas.get_tk_widget().pack()
     canvas.get_tk_widget().pack()
 
 

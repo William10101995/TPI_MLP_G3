@@ -23,7 +23,7 @@ def crear_arquitectura(opciones):
     return list(artquitecura)
 
 
-# funcion para obtener el momentum
+# función para obtener el momentum
 def getMomentum(opciones):
     return float(opciones[-1])
 
@@ -53,13 +53,13 @@ def getDataset(opciones):
     return dataset
 
 
-# funcion para tratar ejemplo de entrada
+# función para tratar ejemplo de entrada
 def tratarEntrada(arreglo):
     patron = np.array(arreglo).ravel()
     return patron
 
 
-# Funcion para ordenar los valores de mse y accuracy
+# Función para ordenar los valores de mse y accuracy
 def ordenarMSEyAccuracy(mse, accuracy):
 
     result = []
@@ -67,15 +67,15 @@ def ordenarMSEyAccuracy(mse, accuracy):
         for i in range(len(mse)):
             if mse[i][1] < 1:
                 result.append(
-                    f'{i+1}                     {mse[i][1]}                        {accuracy[i][1]}')
+                    f'{i+1}                         {mse[i][1]}                                 {accuracy[i][1]}')
             else:
                 result.append(
-                    f'{i+1}                     {mse[i][1]}                             {accuracy[i][1]}')
+                    f'{i+1}                         {mse[i][1]}                                         {accuracy[i][1]}')
 
     return result
 
 
-# Funcion para tratar la salida de predecir
+# Función para tratar la salida de predecir
 def tratarSalida(salida):
     if (len(salida[0])) == 1:
         return f'Su letra es una: {salida[0]}'
