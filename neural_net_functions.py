@@ -33,13 +33,28 @@ def getMSE(neural_net, X, Y, threshold):
     return mse
 
 
+def getMSETest(neural_net, X, Y, threshold):
+    mse = 0
+    for x, y in zip(X, Y):
+        x = np.atleast_2d(x)
+        y = np.atleast_2d(y)
+
+        predict = forward_pass(neural_net, x)
+        predicted_letter = which_letter_is(predict[-1][1], threshold)
+        real_letter = which_letter_is(y, 0.99)
+
+        mse += (predicted_letter[1] - real_letter[1])**2
+    mse = round(mse / len(Y), 5)
+    return mse
+
+
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
     output = forward_pass(neural_net, X)
     neural_net = back_propagation(neural_net, Y, lr, momentum, cost_f, output)
     return neural_net
 
 
-def training(epochs, neural_net, X, Y, X_val, Y_val, lr, momentum, fa, threshold, desired_accuracy):
+def training(epochs, neural_net, X, Y, X_val, Y_val, X_test, Y_test, lr, momentum, fa, threshold, desired_accuracy):
     x1 = X[0]
     y1 = Y[0]
 
@@ -67,7 +82,8 @@ def training(epochs, neural_net, X, Y, X_val, Y_val, lr, momentum, fa, threshold
 
         if (accuracy >= desired_accuracy):
             break
-    return [trained_neural_net, final_accuracy, final_mse]
+    mseTest = getMSETest(trained_neural_net, X_test, Y_test, threshold)
+    return [trained_neural_net, final_accuracy, final_mse, mseTest]
 
 
 def predict(trained_neural_net, pattern):

@@ -1,5 +1,4 @@
 from lib2to3.pgen2.token import STAR
-from re import M
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
@@ -15,8 +14,9 @@ import middleware_gui as mw
 import funciones_act as fa
 # Funcion para cargar el archivo
 from dataset_gen import distortion_pattern
-# Funcion de la red neuronal
+# Componentes de la red neuronal
 from neural_net_components import create_neural_net
+# Funcion para entrenar la red y predecir
 from neural_net_functions import predict, training
 
 
@@ -211,7 +211,7 @@ entry.insert(0, 0)
 entry.grid(row=0, column=1, padx=2)
 Hovertip(entry, text="Cargue un valor de distorsión para el patrón elegido, este debe estar expresado en decimales,\npor ejemplo 0.3 le proporcionara una distorsión de 30% al patrón, si ingresa 0 se cargara el\npatron sin distorsionar. No olvide limpiar la grilla antes de cargar otro patrón.", hover_delay="5")
 Hovertip(box7, text="Elija un patrón para distorsionar.", hover_delay="5")
-#-------------------    BOTONES    -------------------#
+#-------------------    FUNCIONES PARA BOTONES    -------------------#
 
 
 def mouseClickEntrenar():
@@ -219,6 +219,7 @@ def mouseClickEntrenar():
     global newWindows
     global mse
     global accuracy
+    global mse_test
     newWindows = Toplevel(ventana)
     newWindows.title("Resultados")
     newWindows.geometry("500x500")
@@ -245,13 +246,15 @@ def mouseClickEntrenar():
     momentum = mw.getMomentum(array_opciones)
     trained_neural_net = None
     data_trainning = training(100, red_neuronal, input_X, input_Y,
-                              entrada_validacion, salida_validacion, 0.5, momentum, fa, 0.5, 100)
+                              entrada_validacion, salida_validacion, entrada_test, salida_test, 0.5, momentum, fa, 0.5, 100)
     # Red neuronal entrenada
     trained_neural_net = data_trainning[0]
     # Precisión de la red
     accuracy = data_trainning[1]
     # Error del set de validación
     mse = data_trainning[2]
+    # Error del set de test
+    mse_test = data_trainning[3]
 
     # Trato los datos de accuracy y mse para mostrarlos en la ventana
     res = mw.ordenarMSEyAccuracy(mse, accuracy)
@@ -278,7 +281,10 @@ def mouseClickEntrenar():
     scroll.config(command=mylist.yview, cursor="hand2")
     # Muestro la lista y el scroll
     mylist.pack(padx=10, pady=10)
-
+    # Label para precision de test
+    test = Label(
+        newWindows, text=f'MSE del conjunto de test: {mse_test}', font=fontBox)
+    test.pack(padx=10, pady=10)
     #-------------------    Boton de graficar    -------------------#
     btnPres = Button(newWindows, text="Gráfico Precisión", bg="gainsboro",
                      fg="black", command=plotAccuracy, font=fontButton, cursor="hand2")
