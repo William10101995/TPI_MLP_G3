@@ -14,6 +14,8 @@ import tkinter.messagebox as messagebox
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.figure import Figure
+from idlelib.tooltip import Hovertip
+
 
 from sklearn import neural_network
 from sklearn.metrics import accuracy_score
@@ -72,18 +74,7 @@ input_size = w * h
 states = np.zeros((w, h))
 rect_size = 50  # Tamaño de los botones/cuadros de la matriz
 
-array_resultado = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
+array_resultado = np.zeros((w, h))
 
 # CANVAS GRID
 
@@ -108,16 +99,33 @@ canvas.pack(fill=X, pady=2)
 def print_grid():
     for i in range(w):
         for j in range(h):
-            color = 'black' if states[i, j] > 0 else 'white'
+            color = 'green' if states[i, j] > 0 else 'white'
             canvas.create_rectangle(i * rect_size, j * rect_size, (i + 1) * rect_size,
                                     (j + 1) * rect_size, outline="black", fill=color)  # Dibuja el canvas
 
 
 print_grid()
 
+# -------------------    Pinto el patrón distorcionado    -------------------#
+
+
+def print_grid_dist():
+    global patron_distorsionado
+    distorcion = float(entry.get())
+    patron_original = np.array(mw.getPatron(box7.get()))
+    patron_distorsionado = np.array(
+        distortion_pattern(patron_original, distorcion))  # Aca ver despues el tipo de datos
+    for i in range(w):
+        for j in range(h):
+            states[j, i] = patron_distorsionado[i][j]
+    print_grid()
+
+# -------------------    Limpio states y resultados  -------------------#
+
 
 def clear_callback():
     np.ndarray.fill(states, 0)
+    np.ndarray.fill(array_resultado, 0)
     print_grid()
 
 
@@ -127,7 +135,7 @@ package_lore.grid(row=0, padx=10, pady=5)
 etiquetaTitulo = Label(package_lore, text="Grupo 3",
                        bg="gainsboro", fg="black", font=fontTitle)
 etiquetaTitulo.grid(row=0, column=0, padx=10, pady=2)
-etiquetaDescripcion = Label(package_lore, text="MLP (Multi-Layer Perceptron)",
+etiquetaDescripcion = Label(package_lore, text="MLP (Multi-Layer Perceptrón)",
                             bg="gainsboro", fg="black", font=fontTitle2)
 etiquetaDescripcion.grid(row=1, column=0, padx=10, pady=2)
 
@@ -193,12 +201,34 @@ box6 = ttk.Combobox(package_e6,
 box6.grid()
 box6.current(0)
 
-
+# Espacio para botones de entrenamiento
 package_e7 = Frame(package_options, bg="gainsboro")
-package_e7.grid(row=7, padx=10, pady=5)
+package_e7.grid(row=12, padx=10, pady=5)
+# Espacio para boton de limpiar
 package_e8 = Frame(package_options, bg="gainsboro")
-package_e8.grid(row=8, padx=10, pady=5)
+package_e8.grid(row=11, padx=10, pady=5)
 
+# Espacio para etiqueta de carga de patrón
+package_e9 = Frame(package_options, bg="gainsboro")
+package_e9.grid(row=9, padx=10, pady=5)
+etiqueta9 = Label(package_e9, text="Cargar patrón distorsionado",
+                  bg="gainsboro", font=fontLabel)
+etiqueta9.grid()
+# Espacio para caja de texto de carga de patrón
+package_e10 = Frame(package_options, bg="gainsboro")
+package_e10.grid(row=10, padx=10, pady=1)
+box7 = ttk.Combobox(package_e10,
+                    state="readonly",
+                    values=["Patron B", "Patron D", "Patron F"],
+                    font=fontBox, cursor="hand2"
+                    )
+box7.grid(row=0, column=0)
+box7.current(0)
+entry = Entry(package_e10, width=10, font=fontBox)
+entry.insert(0, 0)
+entry.grid(row=0, column=1, padx=2)
+Hovertip(entry, text="Cargue un valor de distorsión para el patrón elegido, este debe estar expresado en decimales,\npor ejemplo 0.3 le proporcionara una distorsión de 30% al patrón, si ingresa 0 se cargara el\npatron sin distorsionar. No olvide limpiar la grilla antes de cargar otro patrón.", hover_delay="5")
+Hovertip(box7, text="Elija un patrón para distorsionar.", hover_delay="5")
 #-------------------    BOTONES    -------------------#
 
 
@@ -238,7 +268,7 @@ def mouseClickEntrenar():
     trained_neural_net = data_trainning[0]
     # Precisión de la red
     accuracy = data_trainning[1]
-    # Error del set de validacion
+    # Error del set de validación
     mse = data_trainning[2]
 
     # Trato los datos de accuracy y mse para mostrarlos en la ventana
@@ -274,6 +304,10 @@ def mouseClickEntrenar():
                     fg="black", command=plotMSE, font=fontButton, cursor="hand2")
     btnPres.place(x=70, y=460)
     btnMse.place(x=290, y=460)
+    Hovertip(btnPres, text="Crea el gráfico de precisión del modelo.",
+             hover_delay="5")
+    Hovertip(
+        btnMse, text="Crea el gráfico del MSE del conjunto de validación.", hover_delay="5")
 
 
 #-------------------    RESULTADO    -------------------#
@@ -367,14 +401,24 @@ def plotAccuracy():
 etiquetaEntrenar = Button(package_e7, text="Entrenar", bg="gainsboro",
                           fg="black", command=mouseClickEntrenar, font=fontButton, cursor="hand2")
 etiquetaEntrenar.grid(row=0, column=0, padx=10)
+Hovertip(etiquetaEntrenar,
+         text="Entrena el modelo con los parametros seleccionados. Si elige otra arquitectura debe volver a entrenar.", hover_delay="5")
 # Etiqueta Predecir
 etiquetaPredecir = Button(package_e7, text="Predecir", bg="gainsboro",
                           fg="black", command=mouseClickResultado, font=fontButton, cursor="hand2")
 etiquetaPredecir.grid(row=0, column=1, padx=10)
+Hovertip(etiquetaPredecir,
+         text="Predice el ejemplo cargado en la grilla. No olvide entrenar antes de predecir.", hover_delay="5")
 # Etiqueta limpiar grilla
 clear = Button(package_e8, text="Limpiar Grilla", bg="gainsboro",
                fg="black", command=clear_callback, font=fontButton, cursor="hand2")
 clear.grid(row=0, pady=10)
+Hovertip(clear, text="Limpia la grilla devolviendola a su estado inicial.", hover_delay="5")
+# Etiqueta cargar patrón
+cargar = Button(package_e10, text="Cargar", bg="gainsboro",
+                fg="black", command=print_grid_dist, font=fontButton, cursor="hand2")
+cargar.grid(row=0, column=2, pady=5)
+Hovertip(cargar, text="Carga el patrón de ejemplo configurado a la grilla.", hover_delay="5")
 
 
 ventana.mainloop()

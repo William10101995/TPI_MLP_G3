@@ -6,6 +6,7 @@ from unittest import result
 import numpy as np
 from dataset_gen import cargar_datos
 import matplotlib.pyplot as plt
+from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, pattern_D
 
 
 # funcion para armar la arquitectura de la red
@@ -81,3 +82,18 @@ def tratarSalida(salida):
         return f'Su letra es una: {salida[0]}'
     else:
         return salida[0]
+
+
+# Funcion para devolver el patron seleccionado
+def getPatron(opciones):
+    # mapa de patrones
+    patrones = {
+        'Patron B': pattern_B,
+        'Patron D': pattern_D,
+        'Patron F': pattern_F,
+    }
+    # si el patron que recibo es igual a la clave del mapa retorno el valor
+    for key in patrones:
+        if key == opciones:
+            patron = patrones[key]
+    return patron

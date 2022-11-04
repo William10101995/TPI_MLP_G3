@@ -35,7 +35,6 @@ def getMSE(neural_net, X, Y, threshold):
 
 
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
-
     output = forward_pass(neural_net, X)
     neural_net = back_propagation(neural_net, Y, lr, momentum, cost_f, output)
     return neural_net
