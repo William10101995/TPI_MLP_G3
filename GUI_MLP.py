@@ -1,30 +1,20 @@
-from cProfile import label
 from lib2to3.pgen2.token import STAR
 from re import M
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
-from tkinter.colorchooser import askcolor
-from turtle import color
-from matplotlib.pyplot import fill
 import numpy as np
 import math
-import tkinter.filedialog as fdialog
-import tkinter.messagebox as messagebox
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from matplotlib.figure import Figure
 from idlelib.tooltip import Hovertip
-
-
-from sklearn import neural_network
-from sklearn.metrics import accuracy_score
 # Importo Middeleware para tratar las salidas de la gui
 import middleware_gui as mw
 # importo funciones de activacion
 import funciones_act as fa
 # Funcion para cargar el archivo
-from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, pattern_D
+from dataset_gen import distortion_pattern
 # Funcion de la red neuronal
 from neural_net_components import create_neural_net
 from neural_net_functions import predict, training
@@ -57,14 +47,6 @@ package_options.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
 package_matriz = Frame(package, width=600, height=600, bg="gray")
 package_matriz.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
 
-
-"""
-package_options = Frame(package, width=600, height=600, bg="cyan4", bd=10, relief="ridge", cursor="hand2")
-package_options.grid(row=0, column=0, padx=10, pady=10, sticky="nsew") #stick alinia el contenido de la celda
-
-package_matriz = Frame(package, width=600, height=600, bg="cyan4", bd=10, relief="ridge", cursor="hand2")
-package_matriz.grid(row=0, column=1, padx=10, pady=10, sticky="nsew") #nsew = north south east west
-"""
 #--------------------- CANVAS ---------------------#
 #---------------   VALORES INICIALES --------------#
 # Tamaño de la matriz
@@ -418,7 +400,7 @@ Hovertip(clear, text="Limpia la grilla devolviendola a su estado inicial.", hove
 cargar = Button(package_e10, text="Cargar", bg="gainsboro",
                 fg="black", command=print_grid_dist, font=fontButton, cursor="hand2")
 cargar.grid(row=0, column=2, pady=5)
-Hovertip(cargar, text="Carga el patrón de ejemplo configurado a la grilla.", hover_delay="5")
+Hovertip(cargar, text="Carga el patrón de ejemplo configurado a la grilla. No olvide limpiar la grilla antes de cargar un patrón nuevo.", hover_delay="5")
 
 
 ventana.mainloop()

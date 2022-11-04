@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.metrics import accuracy_score
 from neural_net_components import back_propagation, forward_pass
 
 

@@ -1,12 +1,7 @@
 from tkinter import *
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
-from matplotlib.figure import Figure
-from unittest import result
 import numpy as np
 from dataset_gen import cargar_datos
-import matplotlib.pyplot as plt
-from dataset_gen import cargar_datos, distortion_pattern, pattern_F, pattern_B, pattern_D
+from dataset_gen import cargar_datos, pattern_F, pattern_B, pattern_D
 
 
 # funcion para armar la arquitectura de la red
@@ -30,7 +25,7 @@ def getMomentum(opciones):
 
 
 # funcion para obtener el dataset
-# 100_10validacion  	500_10validacion	1000_10validacion
+# 100_10validacion  500_10validacion	1000_10validacion
 # 100_20validacion	500_20validacion	1000_20validacion
 # 100_30validacion	500_30validacion	1000_30validacion
 def getDataset(opciones):

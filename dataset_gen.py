@@ -1,10 +1,7 @@
-from email.policy import strict
-import re
 import numpy as np
 import math
 import random
 
-from yaml import unsafe_load
 
 pattern_B = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
