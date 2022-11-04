@@ -2,6 +2,7 @@ import numpy as np
 from neural_net_components import back_propagation, forward_pass
 
 
+# Funcion para obtener la precision de la red a lo largo de las epocas
 def getAccuracy(neural_net, X, Y, threshold):
     correct = 0
     for x, y in zip(X, Y):
@@ -18,6 +19,7 @@ def getAccuracy(neural_net, X, Y, threshold):
     return accuracy
 
 
+# Funcion para obtener el error cuadratico medio del conjunto de validacion a lo largo de las epocas
 def getMSE(neural_net, X, Y, threshold):
     mse = 0
     for x, y in zip(X, Y):
@@ -33,6 +35,7 @@ def getMSE(neural_net, X, Y, threshold):
     return mse
 
 
+# Funcion para obtener el error cuadratico medio del conjunto de test al finalizar el entrenamiento
 def getMSETest(neural_net, X, Y, threshold):
     mse = 0
     for x, y in zip(X, Y):
@@ -48,50 +51,62 @@ def getMSETest(neural_net, X, Y, threshold):
     return mse
 
 
+# Funcion para entrenar una sola vez a la red
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
     output = forward_pass(neural_net, X)
     neural_net = back_propagation(neural_net, Y, lr, momentum, cost_f, output)
     return neural_net
 
 
+# Funcion para entrenar la red una cierta cantidad de epocas
 def training(epochs, neural_net, X, Y, X_val, Y_val, X_test, Y_test, lr, momentum, fa, threshold, desired_accuracy):
     x1 = X[0]
     y1 = Y[0]
-
+    # Convierto el primer patron de entrenamiento a un array de 2 dimensiones
+    # Entrada, esto seria el patron
     x1 = np.atleast_2d(x1)
+    # Salida deseada para el patron
     y1 = np.atleast_2d(y1)
-
+    # Inicializo las listas para guardar los datos de accuracy y mse a lo largo de las epocas
     final_accuracy = []
     final_mse = []
-    # Entrenamos a la red!
+    # Entrenamos a la red por primera vez
     trained_neural_net = train_once(
         neural_net, x1, y1, lr, momentum, fa.costo_derivada)
+    # Entrenamos a la red por las epocas restantes
     for epoch in range(epochs):
+        # Entrenamos a la red por cada ejemplo del conjunto de entrenamiento
         for x, y in zip(X, Y):
+            # Convertimos los ejemplos a matrices de 2 dimensiones para poder operar con ellos
+            # Entrada, esto seria el patron
             x = np.atleast_2d(x)
+            # Salida deseada para el patron
             y = np.atleast_2d(y)
 
             trained_neural_net = train_once(
                 trained_neural_net, x, y, lr, momentum, fa.costo_derivada)
-
+        # Obtengo la precision de la red
         accuracy = getAccuracy(trained_neural_net, X, Y, threshold)
+        # Obtengo el error cuadratico medio del conjunto de validacion
         mse = getMSE(trained_neural_net, X_val, Y_val, threshold)
-
+        # Guardo los datos de accuracy y mse
         final_accuracy.append([epoch, accuracy])
         final_mse.append([epoch, mse])
 
         if (accuracy >= desired_accuracy):
             break
+    # Obtenemos el error cuadratico medio del conjunto de test luego de entrenar
     mseTest = getMSETest(trained_neural_net, X_test, Y_test, threshold)
     return [trained_neural_net, final_accuracy, final_mse, mseTest]
 
 
+# Funcion para predecir un ejemplo
 def predict(trained_neural_net, pattern):
-    # print(trained_neural_net)
     result = forward_pass(trained_neural_net, pattern)
     return which_letter_is(result[-1][1], 0.5)
 
 
+# Funcion para obtener la letra a la que pertenece un patron
 def which_letter_is(output, threshold):
     mapping = [
         ("B", output[0][0]),

@@ -2,7 +2,7 @@ import numpy as np
 import math
 import random
 
-
+# Entrada patron B --> salida deseada [1, 0, 0]
 pattern_B = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
@@ -15,7 +15,7 @@ pattern_B = [
     [0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
-
+# Entada patron D --> salida deseada [0, 0, 1]
 pattern_D = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
@@ -28,7 +28,7 @@ pattern_D = [
     [0, 0, 0, 1, 1, 1, 1, 1, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
-
+# Entrada Patron F --> salida deseada [0, 1, 0]
 pattern_F = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
@@ -63,6 +63,7 @@ def random_position_change(pos1, pos2):
     return array[r]
 
 
+# Funcion para generar el patron distorsionado segun el porcentaje de distorsion
 def distortion_pattern(pattern, percentage):
     """
         percentage: este valor tiene que ir de 0 a 1 indicando el porcentaje de distorsion
@@ -91,6 +92,7 @@ def distortion_pattern(pattern, percentage):
     return pattern
 
 
+# Funcion para que devuelve una distorsion aleatoria para un patron
 def random_distortion_set(a, b):
     rand = random.randrange(a, b)
     if (rand < 10):
@@ -99,6 +101,7 @@ def random_distortion_set(a, b):
         return float('0.' + str(rand))
 
 
+# Funcion para generar el dataset
 def create_dataset(n_ejemplos, arrayPattern):
     # porcentaje de ejemplos para entrenamiento
     porcentaje_entrenamineto = round(n_ejemplos * 0.7)
@@ -215,6 +218,7 @@ def create_dataset(n_ejemplos, arrayPattern):
     return [array_dist_data, array_real_data, array_data_test, array_data_esp_test, array_data_validation, array_data_esp_validation]
 
 
+# Funcion para generar los txt de los datasets
 def guardar_datos():
     datos = create_dataset(100, [pattern_B, pattern_F, pattern_D])
     datos_entrada = np.array(datos[0])
@@ -237,6 +241,7 @@ def guardar_datos():
         "datasets/100/10_validacion/validacion/salida_validacion.txt", datos_salida_validacion)
 
 
+# Funcion para cargar los datos de los txt
 def cargar_datos(n_ejemplos, porcentaje_validacion):
     datos_entrada = np.loadtxt(
         "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/entrada_entrenamiento.txt")

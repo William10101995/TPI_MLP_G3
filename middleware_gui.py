@@ -4,7 +4,7 @@ from dataset_gen import cargar_datos
 from dataset_gen import cargar_datos, pattern_F, pattern_B, pattern_D
 
 
-# funcion para armar la arquitectura de la red
+# funcion para armar la arquitectura de la red segun la seleccion del usuario
 def crear_arquitectura(opciones):
     n_capas = int(opciones[1])
     n_neuronas = int(opciones[2])
@@ -19,12 +19,12 @@ def crear_arquitectura(opciones):
     return list(artquitecura)
 
 
-# función para obtener el momentum
+# función para obtener el momentum que selecciono el usuario
 def getMomentum(opciones):
     return float(opciones[-1])
 
 
-# funcion para obtener el dataset
+# funcion para obtener el dataset que selecciono el usuario
 # 100_10validacion  500_10validacion	1000_10validacion
 # 100_20validacion	500_20validacion	1000_20validacion
 # 100_30validacion	500_30validacion	1000_30validacion
@@ -79,7 +79,7 @@ def tratarSalida(salida):
         return salida[0]
 
 
-# Funcion para devolver el patron seleccionado
+# Funcion para devolver el patron seleccionado por el usuario
 def getPatron(opciones):
     # mapa de patrones
     patrones = {
