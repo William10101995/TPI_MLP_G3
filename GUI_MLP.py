@@ -21,8 +21,7 @@ from neural_net_functions import predict, training
 
 
 # ------------------------------------------------------------
-ventana = Tk()
-# ventana.geometry("900x600") #tamaño de la ventana
+ventana = Tk() # Ventana principal
 ventana.title("MLP")  # titulo de la ventana
 ventana.configure(background='gray')  # color de fondo
 
@@ -35,7 +34,6 @@ fontBox = font.Font(family="Arial", size=10, weight="bold", slant="italic")
 fontResult = font.Font(family="Arial", size=8)
 
 #-------------------    PACKAGE    -------------------#
-
 package = Frame(ventana, width=600, height=600, bg="gray", bd=10,
                 relief="ridge")  # relief es el marco del package
 # stick alinia el contenido de la celda - nsew = north south east west
@@ -56,11 +54,9 @@ input_size = w * h
 states = np.zeros((w, h))
 rect_size = 50  # Tamaño de los botones/cuadros de la matriz
 
-array_resultado = np.zeros((w, h))
+array_resultado = np.zeros((w, h)) # Se inicia en blanco una matriz de tamaño W x H en forma de arreglo, mas adelante se guarda la letra dibujada
 
-# CANVAS GRID
-
-
+# Al hacer click en una cuadricula pinta o despinta dependiendo su estado anterior
 def mouseClick(event):
     x = math.floor(event.x / rect_size)
     y = math.floor(event.y / rect_size)
@@ -69,28 +65,23 @@ def mouseClick(event):
         states[x, y] = 0 if states[x, y] > 0 else 1
     print_grid()
 
-
+# Crea el Canvas dentro de package_matriz
 canvas = Canvas(package_matriz, width=rect_size*w,
                 height=rect_size*h, cursor="spraycan")
 canvas.bind("<Button-1>", mouseClick)
 canvas.pack(fill=X, pady=2)
 
-# DRAW GRID
-
-
+# Dibuja los cuadrados de la matriz
 def print_grid():
     for i in range(w):
         for j in range(h):
             color = 'green' if states[i, j] > 0 else 'white'
             canvas.create_rectangle(i * rect_size, j * rect_size, (i + 1) * rect_size,
-                                    (j + 1) * rect_size, outline="black", fill=color)  # Dibuja el canvas
-
+                                    (j + 1) * rect_size, outline="black", fill=color) 
 
 print_grid()
 
 # -------------------    Pinto el patrón distorcionado    -------------------#
-
-
 def print_grid_dist():
     global patron_distorsionado
     distorcion = float(entry.get())
@@ -103,13 +94,10 @@ def print_grid_dist():
     print_grid()
 
 # -------------------    Limpio states y resultados  -------------------#
-
-
 def clear_callback():
     np.ndarray.fill(states, 0)
     np.ndarray.fill(array_resultado, 0)
     print_grid()
-
 
 #--------------------- MENU ---------------------#
 package_lore = Frame(package_options, bg="gainsboro")
@@ -211,9 +199,9 @@ entry.insert(0, 0)
 entry.grid(row=0, column=1, padx=2)
 Hovertip(entry, text="Cargue un valor de distorsión para el patrón elegido, este debe estar expresado en decimales,\npor ejemplo 0.3 le proporcionara una distorsión de 30% al patrón, si ingresa 0 se cargara el\npatron sin distorsionar. No olvide limpiar la grilla antes de cargar otro patrón.", hover_delay="5")
 Hovertip(box7, text="Elija un patrón para distorsionar.", hover_delay="5")
+
+
 #-------------------    FUNCIONES PARA BOTONES    -------------------#
-
-
 def mouseClickEntrenar():
     global trained_neural_net
     global newWindows
@@ -299,8 +287,6 @@ def mouseClickEntrenar():
 
 
 #-------------------    RESULTADO    -------------------#
-
-
 def mouseClickResultado():
     # Array de opciones
     array_opciones = [str(box1.get()), str(box2.get()), str(
@@ -333,8 +319,6 @@ def mouseClickResultado():
     resultados.place(x=150, y=200, anchor="center")
 
 # -------------- Funciones para graficar -------------- #
-
-
 def plotMSE():
     error = []
     epocas = []
