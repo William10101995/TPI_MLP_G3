@@ -45,6 +45,8 @@ Antes de empezar asegúrese de tener [Python](https://www.python.org/downloads/)
 - [Matplotlib](https://matplotlib.org/)
 - [Tkinter](https://docs.python.org/es/3/library/tkinter.html)
 
+<a name="instalacion"/>
+
 ## 4. Instalación ⚙️
 
 Siga los siguiente pasos para correr el proyecto:
@@ -57,11 +59,15 @@ $ python GUI_MLP.py
 
 Listo, ya tendrá la aplicación corriendo.
 
+<a name="anexo"/>
+
 ## 5. Anexo 📢
 
 - [Manual de Usuario](https://docs.google.com/document/d/19M3iYvb9ULzEZd5bb4UNLF2F1M0wWV1SPfvS3jlY3G0/edit?usp=drivesdk): Lea el manual de usuario para más detalles de cómo funciona el programa.
 - [Paper](https://docs.google.com/document/d/17riM6g8YNuGtf7qouLALgSh9Uf-6l2x71wXRPA_4vqo/edit?usp=drivesdk): Lea la investigación realizada para la implementación.
 - [Ejecutable](https://drive.google.com/drive/folders/1ucEHDrmnNawJMfwGzA1HhuOt8tj7CZaq): Descargue el ejecutable para Windows.
+
+<a name="desarrolladores"/>
 
 ## 6. Desarrolladores ⚡
 
@@ -70,6 +76,8 @@ Listo, ya tendrá la aplicación corriendo.
 - [Nasir, Khalil](https://github.com/KhalilKAN)
 - [Stride, Eric](https://github.com/StrideEric)
 - [Troncoso, Clarise](https://github.com/ClariseT)
+
+<a name="licencia"/>
 
 ## 7. Licencia ✒️
 
