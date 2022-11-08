@@ -1,13 +1,10 @@
 # ANÁLISIS DE UNA MLP (MULTI-LAYER PERCEPTRON)
 ## Tabla de Contenido
-[TOCM]
-
-[TOC]
 1. [Descripción](#descripcion)
 2. [Capaturas de Pantalla](#capturas-de-pantalla) 
 3. [Pre requisitos](#pre-requisitos)
 4. [Instalación](#instalacion)
-5. [Anexo](#Anexo)
+5. [Anexo](#anexo)
 6. [Desarrolladores](#desarrolladores)
 7. [Licencia](#licencia)
 
