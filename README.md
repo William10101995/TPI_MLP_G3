@@ -29,9 +29,9 @@ $ python GUI_MLP.py
 ```
 Listo, ya tendrá la aplicación corriendo.
 ## 5. Anexo 📢
-[Manual de Usuario](https://docs.google.com/document/d/19M3iYvb9ULzEZd5bb4UNLF2F1M0wWV1SPfvS3jlY3G0/edit?usp=drivesdk): Lea el manual de usuario para más detalles de cómo funciona el programa.
-[Paper](https://docs.google.com/document/d/17riM6g8YNuGtf7qouLALgSh9Uf-6l2x71wXRPA_4vqo/edit?usp=drivesdk): Lea la investigación realizada para la implementación.
-[Ejecutable](https://drive.google.com/drive/folders/1ucEHDrmnNawJMfwGzA1HhuOt8tj7CZaq): Descargue el ejecutable para Windows.
+* [Manual de Usuario](https://docs.google.com/document/d/19M3iYvb9ULzEZd5bb4UNLF2F1M0wWV1SPfvS3jlY3G0/edit?usp=drivesdk): Lea el manual de usuario para más detalles de cómo funciona el programa.
+* [Paper](https://docs.google.com/document/d/17riM6g8YNuGtf7qouLALgSh9Uf-6l2x71wXRPA_4vqo/edit?usp=drivesdk): Lea la investigación realizada para la implementación.
+* [Ejecutable](https://drive.google.com/drive/folders/1ucEHDrmnNawJMfwGzA1HhuOt8tj7CZaq): Descargue el ejecutable para Windows.
 
 ## 6. Desarrolladores ⚡
 * [Alaez, Magali](https://github.com/MagaAlaez)
