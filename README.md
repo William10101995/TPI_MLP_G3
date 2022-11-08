@@ -20,7 +20,7 @@ Implementación de un MLP (Multi-Layer Perceptrón) para el reconocimiento de ca
   <img src='./images/red.png' alt="red neuronal"/>
 </p>
 
-Para su mejor visualización en la figura se representaron trece (13) neuronas en la capa de entrada, pero es preciso aclarar que son cien (100) neuronas las que conforman dicha capa.
+Para su mejor visualización en la figura se representaron diez (10) neuronas en la capa de entrada, pero es preciso aclarar que son cien (100) neuronas las que conforman dicha capa.
 
 <a name="capturas-de-pantalla"/>
 
