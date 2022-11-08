@@ -44,6 +44,7 @@ Antes de empezar asegúrese de tener [Python](https://www.python.org/downloads/)
 
 - [Matplotlib](https://matplotlib.org/)
 - [Tkinter](https://docs.python.org/es/3/library/tkinter.html)
+- [Numpy](https://numpy.org/)
 
 <a name="instalacion"/>
 
