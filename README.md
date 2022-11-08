@@ -12,7 +12,7 @@
 ### 1. Descripción 🚀
 ***
 Implementación de un MLP (Multi-Layer Perceptrón) para el reconocimiento de caracteres. Podrá elegir la arquitectura con la que desee implementar la red neuronal, seleccionar entre nueve datasets distintos para el entrenamiento. Podrá apreciar los errores (MSE) de validación y precisión del modelo, tanto numéricamente como gráficamente.   
-### 2. Capturas de Patalla
+### 2. Capturas de Patalla 📸
 ![Image text](https://www.united-internet.de/fileadmin/user_upload/Brands/Downloads/Logo_IONOS_by.jpg)
 ## 3. Pre requisitos 📋
 ***
