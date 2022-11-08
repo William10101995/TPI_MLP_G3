@@ -1,0 +1,3 @@
+pyinstaller --noconfirm --onefile --windowed --icon "C:/Users/Khalil/Desktop/TPI_MLP_G3/icon.ico" --add-data "C:/Users/Khalil/Desktop/TPI_MLP_G3/datasets;datasets/"  "C:/Users/Khalil/Desktop/TPI_MLP_G3/GUI_MLP.py"
+
+Claramente, adaptar el path
