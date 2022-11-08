@@ -1,6 +1,7 @@
 import numpy as np
 import math
 import random
+import os
 
 # Entrada patron B --> salida deseada [1, 0, 0]
 pattern_B = [
@@ -244,15 +245,15 @@ def guardar_datos():
 # Funcion para cargar los datos de los txt
 def cargar_datos(n_ejemplos, porcentaje_validacion):
     datos_entrada = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/entrada_entrenamiento.txt")
+        os.path.dirname(os.path.abspath(__file__)) + "/datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/entrada_entrenamiento.txt")
     datos_salida = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/salida_entrenamiento.txt")
-    datos_prueba = np.loadtxt("datasets/"+str(n_ejemplos)+"/" +
+        os.path.dirname(os.path.abspath(__file__)) + "/datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/entrenamiento/salida_entrenamiento.txt")
+    datos_prueba = np.loadtxt(os.path.dirname(os.path.abspath(__file__)) + "/datasets/"+str(n_ejemplos)+"/" +
                               str(porcentaje_validacion)+"_validacion/test/entrada_test.txt")
     datos_salida_prueba = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/test/salida_test.txt")
+        os.path.dirname(os.path.abspath(__file__)) + "/datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/test/salida_test.txt")
     datos_validacion = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/entrada_validacion.txt")
+        os.path.dirname(os.path.abspath(__file__)) + "/datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/entrada_validacion.txt")
     datos_salida_validacion = np.loadtxt(
-        "datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/salida_validacion.txt")
+        os.path.dirname(os.path.abspath(__file__)) + "/datasets/"+str(n_ejemplos)+"/"+str(porcentaje_validacion)+"_validacion/validacion/salida_validacion.txt")
     return [datos_entrada, datos_salida, datos_prueba, datos_salida_prueba, datos_validacion, datos_salida_validacion]
