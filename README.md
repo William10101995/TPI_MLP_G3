@@ -10,13 +10,33 @@
 6. [Desarrolladores](#desarrolladores)
 7. [Licencia](#licencia)
 
+<a name="descripcion"/>
+
 ## 1. Descripción 🚀
 
 Implementación de un MLP (Multi-Layer Perceptrón) para el reconocimiento de caracteres. Podrá elegir la arquitectura con la que desee implementar la red neuronal, seleccionar entre nueve datasets distintos para el entrenamiento. Podrá apreciar los errores (MSE) de validación y precisión del modelo, tanto numéricamente como gráficamente.
 
+<p align="center">
+  <img src='./images/red.png' alt="red neuronal"/>
+</p>
+
+<a name="capturas-de-pantalla"/>
+
 ## 2. Capturas de Pantalla 📸
 
-![Image text](https://www.united-internet.de/fileadmin/user_upload/Brands/Downloads/Logo_IONOS_by.jpg)
+<p align="center">
+  <img src='./images/home.png' alt="pantalla de inicio"/>
+</p>
+
+<p align="center">
+  <img src='./images/entrenar.png' alt="ventanas al entrenar"/>
+</p>
+
+<p align="center">
+  <img src='./images/predecir.png' alt="ventanas al predecir"/>
+</p>
+
+<a name="pre-requisitos"/>
 
 ## 3. Pre requisitos 📋
 
