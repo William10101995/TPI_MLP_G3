@@ -229,7 +229,7 @@ def mouseClickEntrenar():
     # 100 entradas, 5 o 10 neuronas en la capa oculta, 5 o 10 neuronas en la capa oculta, 3 salidas
     topologia = mw.crear_arquitectura(array_opciones)
     # tipo de datos de topologia
-    red_neuronal = create_neural_net(topologia, fa)
+    red_neuronal = create_neural_net(topologia, fa, layers = array_opciones[1])
     # Obtengo el momento
     momentum = mw.getMomentum(array_opciones)
     trained_neural_net = None
@@ -297,26 +297,47 @@ def mouseClickResultado():
             array_resultado[i][j] = int(states[(j), (i)])
     # Trato los datos que toma de la grilla de 10x10
     entrada = mw.tratarEntrada(array_resultado)
-    # Hago la prediccion con los datos de la grilla
-    prediccion = predict(trained_neural_net, entrada)
-    # Trato los datos de la prediccion
-    resultado = mw.tratarSalida(prediccion)
+    
     # --------------   Ventana    --------------#
     newWindows = Toplevel(ventana)
     newWindows.title("Resultados")
-    newWindows.geometry("300x300")
+    newWindows.geometry("500x300")
     # --------------   Titulo    --------------#
     label = Label(newWindows, text="Resultados",
                   bg="gainsboro", fg="black", font=fontTitle)
     label.pack(padx=10)
-    # --------------   Label Letra   --------------#
-    resultados = Label(newWindows, text=f'{resultado}',
-                       bg="gainsboro", fg="black", font=fontLabel)
-    resultados.place(x=150, y=150, anchor="center")
-    # --------------   Label Probabilidad   --------------#
-    resultados = Label(newWindows, text=f'Probabilidad: {prediccion[1]}',
-                       bg="gainsboro", fg="black", font=fontLabel)
-    resultados.place(x=150, y=200, anchor="center")
+
+    # Hago la prediccion con los datos de la grilla
+    prediccion = predict(trained_neural_net, entrada)
+    if len(prediccion[0]) == 1:
+        # Trato los datos de la prediccion
+        resultado1 = mw.tratarSalida(prediccion[0])
+        resultado2 = mw.tratarSalida(prediccion[2])
+        resultado3 = mw.tratarSalida(prediccion[4])
+        # --------------   Label Letra   --------------#
+
+        resultados = Label(newWindows, text=f'{resultado1}', bg="gainsboro", fg="black", font=fontLabel)
+        resultados.place(x=150, y=100, anchor="center")
+
+        resultados = Label(newWindows, text=f'{resultado2}', bg="gainsboro", fg="black", font=fontLabel)
+        resultados.place(x=150, y=150, anchor="center")
+
+        resultados = Label(newWindows, text=f'{resultado3}', bg="gainsboro", fg="black", font=fontLabel)
+        resultados.place(x=150, y=200, anchor="center")
+
+        # --------------   Label Probabilidad   --------------#
+        resultados = Label(newWindows, text=f'--->   {prediccion[1]}', bg="gainsboro", fg="black", font=fontLabel)
+        resultados.place(x=290, y=100, anchor="center")
+
+        resultados = Label(newWindows, text=f'--->   {prediccion[3]}', bg="gainsboro", fg="black", font=fontLabel)
+        resultados.place(x=290, y=150, anchor="center")
+
+        resultados = Label(newWindows, text=f'--->   {prediccion[5]}', bg="gainsboro", fg="black", font=fontLabel)
+        resultados.place(x=290, y=200, anchor="center")
+    else:
+        resultados = Label(newWindows, text=f'No se pudo reconocer la letra', bg="gainsboro", fg="black", font=fontLabel)
+        resultados.place(x=250, y=150, anchor="center")
+
 
 # -------------- Funciones para graficar -------------- #
 def plotMSE():

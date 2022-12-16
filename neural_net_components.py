@@ -17,13 +17,13 @@ class layer:
 
 
 # defino una funcion para crear la red
-def create_neural_net(topology, fa):
+def create_neural_net(topology, fa, layers):
     # inicializo una lista para guardar cada capa
     neural_net = []
     # recorro cada una de las capas de la arquitectura seleccionada
     for l, _layer in enumerate(topology[:-1]):
         # Si las capas son la ocultas le seteo la funcion de activacion lineal y la agregamos a la red
-        if (l < 2):
+        if (l < int(layers)):
             neural_net.append(
                 layer(topology[l], topology[l+1], fa.lineal, fa.lineal_derivada))
         # Si la capa es la de salida le seteo la funcion de activacion sigmoide y la agregamos a la red

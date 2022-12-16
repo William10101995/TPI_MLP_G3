@@ -115,4 +115,4 @@ def which_letter_is(output, threshold):
     ]
 
     letter_is = sorted(mapping, key=lambda x: x[1])
-    return [letter_is[2][0], letter_is[2][1]] if float(letter_is[2][1]) > threshold else ["No se pudo identificar la letra", 0]
+    return [letter_is[2][0], letter_is[2][1], letter_is[1][0], letter_is[1][1], letter_is[0][0], letter_is[0][1]] if float(letter_is[2][1]) > threshold else ["No se pudo identificar la letra", 0]

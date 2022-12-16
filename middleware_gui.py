@@ -73,10 +73,10 @@ def ordenarMSEyAccuracy(mse, accuracy):
 
 # Función para tratar la salida de predecir
 def tratarSalida(salida):
-    if (len(salida[0])) == 1:
-        return f'Su letra es una: {salida[0]}'
+    if (len(salida)) == 1:
+        return f'Letra: {salida}'
     else:
-        return salida[0]
+        return salida
 
 
 # Funcion para devolver el patron seleccionado por el usuario
