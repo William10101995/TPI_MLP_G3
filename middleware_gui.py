@@ -2,6 +2,31 @@ from tkinter import *
 import numpy as np
 from dataset_gen import cargar_datos
 from dataset_gen import cargar_datos, pattern_F, pattern_B, pattern_D
+import pickle
+import os
+
+# Funcion para obtener el modelo que selecciono el usuario
+
+
+def getModelo(opciones):
+    # mapa de modelos
+    modelos = {
+        '100_10val_1CapOc_5neu_mom05': '100_10val_1CapOc_5neu_mom05.pickle',
+        '100_20val_2CapOc_10neu_mom09': '100_20val_2CapOc_10neu_mom09.pickle',
+        '500_20val_2CapOc_10neu_mom05': '500_20val_2CapOc_10neu_mom05.pickle',
+        '500_10val_1CapOc_5neu_mom09': '500_10val_1CapOc_5neu_mom09.pickle',
+        '1000_30val_2CapOc_10neu_mom09': '1000_30val_2CapOc_10neu_mom09.pickle',
+        '1000_10val_1CapOc_5neu_mom05': '1000_10val_1CapOc_5neu_mom05.pickle',
+    }
+    # si el modelo que recibo es igual a la clave del mapa retorno el valor
+    for key in modelos:
+        if key == opciones:
+            modelo = modelos[key]
+    # abro el archivo
+    with open(os.path.dirname(os.path.abspath(__file__))+'/modelos_entrenados/'+modelo, 'rb') as f:
+        # cargo el modelo
+        model = pickle.load(f)
+    return model
 
 
 # funcion para armar la arquitectura de la red segun la seleccion del usuario
