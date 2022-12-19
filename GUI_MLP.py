@@ -19,7 +19,6 @@ from neural_net_components import create_neural_net
 # Funcion para entrenar la red y predecir
 from neural_net_functions import predict, training
 
-import pickle
 
 # ------------------------------------------------------------
 ventana = Tk()  # Ventana principal
@@ -373,8 +372,6 @@ def mouseClickEntrenar():
     trained_neural_net = None
     data_trainning = training(100, red_neuronal, input_X, input_Y,
                               entrada_validacion, salida_validacion, entrada_test, salida_test, 0.5, momentum, fa, 0.5, 100)
-    """ with open("modelos_entrenados/1000_10val_1CapOc_5neu_mom05.pickle", "wb") as file:
-        pickle.dump(data_trainning, file) """
     # Red neuronal entrenada
     trained_neural_net = data_trainning[0]
     # Precisión de la red
