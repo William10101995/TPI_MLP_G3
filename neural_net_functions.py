@@ -34,6 +34,8 @@ def getMSE(neural_net, X, Y, threshold):
     mse = round(mse / len(Y), 5)
     return mse
 
+# Funcion para obtener el error de validacion de entrenamiento y validacion
+
 
 def getValidatonAndTestError(neural_net, X, Y, threshold):
     error = 0

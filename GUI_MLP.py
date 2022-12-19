@@ -19,6 +19,8 @@ from neural_net_components import create_neural_net
 # Funcion para entrenar la red y predecir
 from neural_net_functions import predict, training
 
+import pickle
+
 # ------------------------------------------------------------
 ventana = Tk()  # Ventana principal
 ventana.title("MLP")  # titulo de la ventana
@@ -262,6 +264,8 @@ def mouseClickCargarModelo():
     banderaModelo = True
     print(banderaModelo)
     global trained_neural_net
+    global error_validacion_ent
+    global error_validacion_val
     global newWindows
     global mse
     global accuracy
@@ -280,6 +284,10 @@ def mouseClickCargarModelo():
     # Error del set de test
     mse_test = data_trainning[3]
 
+    # Error de validacion de entrenamiento
+    error_validacion_ent = data_trainning[4]
+    # Error de validacion de validacion
+    error_validacion_val = data_trainning[5]
     # Trato los datos de accuracy y mse para mostrarlos en la ventana
     res = mw.ordenarMSEyAccuracy(mse, accuracy)
 
@@ -312,11 +320,16 @@ def mouseClickCargarModelo():
     #-------------------    Boton de graficar    -------------------#
     btnPres = Button(newWindows, text="Gráfico Precisión", bg="gainsboro",
                      fg="black", command=plotAccuracy, font=fontButton, cursor="hand2")
+    btnErr = Button(newWindows, text="Gráfico Error de Validación ", bg="gainsboro",
+                    fg="black", command=plotValidation, font=fontButton, cursor="hand2")
     btnMse = Button(newWindows, text="Gráfico MSE", bg="gainsboro",
                     fg="black", command=plotMSE, font=fontButton, cursor="hand2")
-    btnPres.place(x=70, y=460)
+    btnPres.place(x=80, y=460)
     btnMse.place(x=290, y=460)
+    btnErr.place(x=140, y=400)
     Hovertip(btnPres, text="Crea el gráfico de precisión del modelo.",
+             hover_delay="5")
+    Hovertip(btnErr, text="Crea el gráfico de del error de validación del conjunto de entrenamiento y validación.",
              hover_delay="5")
     Hovertip(
         btnMse, text="Crea el gráfico del MSE del conjunto de validación.", hover_delay="5")
@@ -360,6 +373,8 @@ def mouseClickEntrenar():
     trained_neural_net = None
     data_trainning = training(100, red_neuronal, input_X, input_Y,
                               entrada_validacion, salida_validacion, entrada_test, salida_test, 0.5, momentum, fa, 0.5, 100)
+    """ with open("modelos_entrenados/1000_10val_1CapOc_5neu_mom05.pickle", "wb") as file:
+        pickle.dump(data_trainning, file) """
     # Red neuronal entrenada
     trained_neural_net = data_trainning[0]
     # Precisión de la red
