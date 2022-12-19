@@ -34,6 +34,7 @@ def getMSE(neural_net, X, Y, threshold):
     mse = round(mse / len(Y), 5)
     return mse
 
+
 def getValidatonAndTestError(neural_net, X, Y, threshold):
     error = 0
     for x, y in zip(X, Y):
@@ -49,6 +50,8 @@ def getValidatonAndTestError(neural_net, X, Y, threshold):
     return error
 
 # Funcion para entrenar una sola vez a la red
+
+
 def train_once(neural_net, X, Y, lr, momentum, cost_f):
     output = forward_pass(neural_net, X)
     neural_net = back_propagation(neural_net, Y, lr, momentum, cost_f, output)
@@ -70,7 +73,8 @@ def training(epochs, neural_net, X, Y, X_val, Y_val, X_test, Y_test, lr, momentu
     final_training_error = []
     final_validating_error = []
     # Entrenamos a la red por primera vez
-    trained_neural_net = train_once(neural_net, x1, y1, lr, momentum, fa.costo_derivada)
+    trained_neural_net = train_once(
+        neural_net, x1, y1, lr, momentum, fa.costo_derivada)
     # Entrenamos a la red por las epocas restantes
     for epoch in range(epochs):
         # Entrenamos a la red por cada ejemplo del conjunto de entrenamiento
@@ -87,12 +91,15 @@ def training(epochs, neural_net, X, Y, X_val, Y_val, X_test, Y_test, lr, momentu
         accuracy = getAccuracy(trained_neural_net, X, Y, threshold)
         # Obtengo el error cuadratico medio del conjunto de validacion
         mse = getMSE(trained_neural_net, X_val, Y_val, threshold)
-        training_error = getValidatonAndTestError(trained_neural_net, X, Y, threshold)
-        validating_error = getValidatonAndTestError(trained_neural_net, X_val, Y_val, threshold)
+        # Obtengo el error de validacion de entrenamiento y validacion
+        training_error = getValidatonAndTestError(
+            trained_neural_net, X, Y, threshold)
+        validating_error = getValidatonAndTestError(
+            trained_neural_net, X_val, Y_val, threshold)
         # Guardo los datos de accuracy y mse
         final_accuracy.append([epoch, accuracy])
         final_mse.append([epoch, mse])
-        
+
         final_training_error.append([epoch, training_error])
         final_validating_error.append([epoch, validating_error])
 
@@ -100,7 +107,7 @@ def training(epochs, neural_net, X, Y, X_val, Y_val, X_test, Y_test, lr, momentu
             break
     # Obtenemos el error cuadratico medio del conjunto de test luego de entrenar
     mseTest = getMSE(trained_neural_net, X_test, Y_test, threshold)
-    return [trained_neural_net, final_accuracy, final_mse, mseTest]
+    return [trained_neural_net, final_accuracy, final_mse, mseTest, final_training_error, final_validating_error]
 
 
 # Funcion para predecir un ejemplo

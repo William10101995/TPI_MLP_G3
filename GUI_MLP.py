@@ -329,6 +329,8 @@ def mouseClickEntrenar():
     global mse
     global accuracy
     global mse_test
+    global error_validacion_ent
+    global error_validacion_val
     banderaModelo = False
     print(banderaModelo)
     newWindows = Toplevel(ventana)
@@ -367,6 +369,11 @@ def mouseClickEntrenar():
     # Error del set de test
     mse_test = data_trainning[3]
 
+    # Error de validacion de entrenamiento
+    error_validacion_ent = data_trainning[4]
+    # Error de validacion de validacion
+    error_validacion_val = data_trainning[5]
+
     # Trato los datos de accuracy y mse para mostrarlos en la ventana
     res = mw.ordenarMSEyAccuracy(mse, accuracy)
 
@@ -399,11 +406,16 @@ def mouseClickEntrenar():
     #-------------------    Boton de graficar    -------------------#
     btnPres = Button(newWindows, text="Gráfico Precisión", bg="gainsboro",
                      fg="black", command=plotAccuracy, font=fontButton, cursor="hand2")
+    btnErr = Button(newWindows, text="Gráfico Error de Validación ", bg="gainsboro",
+                    fg="black", command=plotValidation, font=fontButton, cursor="hand2")
     btnMse = Button(newWindows, text="Gráfico MSE", bg="gainsboro",
                     fg="black", command=plotMSE, font=fontButton, cursor="hand2")
-    btnPres.place(x=70, y=460)
+    btnPres.place(x=80, y=460)
     btnMse.place(x=290, y=460)
+    btnErr.place(x=140, y=400)
     Hovertip(btnPres, text="Crea el gráfico de precisión del modelo.",
+             hover_delay="5")
+    Hovertip(btnErr, text="Crea el gráfico de del error de validación del conjunto de entrenamiento y validación.",
              hover_delay="5")
     Hovertip(
         btnMse, text="Crea el gráfico del MSE del conjunto de validación.", hover_delay="5")
@@ -511,6 +523,38 @@ def plotAccuracy():
                     'fontsize': 14, 'fontweight': 'bold', 'color': 'tab:purple'})
     plot1.set_xlabel("Épocas")
     plot1.set_ylabel("Precisión")
+    plot1.legend(loc='upper right')
+    canvas = FigureCanvasTkAgg(fig, master=window)
+    canvas.draw()
+    toolbar = NavigationToolbar2Tk(canvas, window)
+    toolbar.update()
+    canvas.get_tk_widget().pack()
+    canvas.get_tk_widget().pack()
+
+
+def plotValidation():
+    ent = []
+    epocas_ent = []
+    val = []
+    epocas_val = []
+    for i in range(len(error_validacion_ent)):
+        ent.append(error_validacion_ent[i][1])
+        epocas_ent.append(error_validacion_ent[i][0])
+    for i in range(len(error_validacion_val)):
+        val.append(error_validacion_val[i][1])
+        epocas_val.append(error_validacion_val[i][0])
+    window = Toplevel(newWindows)
+    window.title('Gráfico Error de Validación')
+    window.geometry("500x500")
+    fig = Figure(figsize=(5, 5), dpi=100)
+    plot1 = fig.add_subplot(111)
+    plot1.plot(epocas_ent, ent, color='purple', marker='^', label='VAL_ENT')
+    plot1.plot(epocas_val, val, color='green', marker='*', label='VAL_VAL')
+
+    plot1.set_title("Error de Validación", fontdict={
+                    'fontsize': 14, 'fontweight': 'bold', 'color': 'tab:blue'})
+    plot1.set_xlabel("Épocas")
+    plot1.set_ylabel("Error")
     plot1.legend(loc='upper right')
     canvas = FigureCanvasTkAgg(fig, master=window)
     canvas.draw()
