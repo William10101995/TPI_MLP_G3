@@ -229,7 +229,7 @@ box7.current(0)
 
 box8 = ttk.Combobox(package_e10,
                     state="readonly",
-                    values=["0", "0.05", "0.1", "0.15", "0.2", "0.25", "0.3"],
+                    values=["0", "0.05", "0.10", "0.15", "0.20", "0.25", "0.30"],
                     font=fontBox, cursor="hand2",
                     width=10
                     )
