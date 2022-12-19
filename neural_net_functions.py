@@ -45,7 +45,7 @@ def getValidatonAndTestError(neural_net, X, Y, threshold):
         predicted_letter = which_letter_is(predict[-1][1], threshold)
         real_letter = which_letter_is(y, 0.99)
 
-        error += (real_letter[1] - predicted_letter[1])
+        error += ((real_letter[1] - predicted_letter[1])**2)/2
     error = round(error / len(Y), 5)
     return error
 
