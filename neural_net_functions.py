@@ -44,7 +44,7 @@ def getValidatonAndTestError(neural_net, X, Y, threshold):
         predicted_letter = which_letter_is(predict[-1][1], threshold)
         real_letter = which_letter_is(y, 0.99)
 
-        error += (real_letter[1] - predicted_letter[1])
+        error += ((real_letter[1] - predicted_letter[1])**2)/2
     error = round(error / len(Y), 5)
     return error
 
@@ -92,7 +92,7 @@ def training(epochs, neural_net, X, Y, X_val, Y_val, X_test, Y_test, lr, momentu
         # Guardo los datos de accuracy y mse
         final_accuracy.append([epoch, accuracy])
         final_mse.append([epoch, mse])
-        
+
         final_training_error.append([epoch, training_error])
         final_validating_error.append([epoch, validating_error])
 
@@ -100,7 +100,7 @@ def training(epochs, neural_net, X, Y, X_val, Y_val, X_test, Y_test, lr, momentu
             break
     # Obtenemos el error cuadratico medio del conjunto de test luego de entrenar
     mseTest = getMSE(trained_neural_net, X_test, Y_test, threshold)
-    return [trained_neural_net, final_accuracy, final_mse, mseTest]
+    return [trained_neural_net, final_accuracy, final_mse, mseTest, final_training_error, final_validating_error]
 
 
 # Funcion para predecir un ejemplo
